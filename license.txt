@@ -1,0 +1,7 @@
+Copyright (c) 2026 [Massimo Melis / massimomelis3197]
+
+All Rights Reserved.
+
+No part of this code or the "easybode" project may be reproduced, 
+distributed, modified, or used in any form or by any means 
+without the prior written permission of the copyright holder.

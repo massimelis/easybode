@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="it" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bode Analysis Studio Pro - Advanced Analytics</title>
+
+    <!-- ═══════════════════════ SEO & condivisione social ═══════════════════════ -->
+    <meta name="description" content="Analizza funzioni di trasferimento online: diagrammi di Bode, Nyquist e Nichols, poli e zeri, margini di stabilità e risposta al gradino. Gratuito e immediato.">
+    <link rel="canonical" href="https://massimomelis3197.github.io/easy_bode_diagram/">
+
+    <!-- Open Graph (anteprima su WhatsApp, Facebook, LinkedIn, Telegram...) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Easy Bode">
+    <meta property="og:locale" content="it_IT">
+    <meta property="og:url" content="https://massimomelis3197.github.io/easy_bode_diagram/">
+    <meta property="og:title" content="Easy Bode — Analisi di Sistemi di Controllo Online">
+    <meta property="og:description" content="Diagrammi di Bode, Nyquist e Nichols, poli e zeri, margini di stabilità e risposta al gradino, direttamente dal browser.">
+    <meta property="og:image" content="https://massimomelis3197.github.io/easy_bode_diagram/bg/og-image.png">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Easy Bode — Analisi di Sistemi di Controllo Online">
+    <meta name="twitter:description" content="Diagrammi di Bode, Nyquist e Nichols, poli e zeri, margini di stabilità e risposta al gradino, direttamente dal browser.">
+    <meta name="twitter:image" content="https://massimomelis3197.github.io/easy_bode_diagram/bg/og-image.png">
+
+    <!-- Colore della barra del browser su mobile, coerente col tema chiaro/scuro del sito -->
+    <meta name="theme-color" content="#8a522e" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#201b3d" media="(prefers-color-scheme: dark)">
+
+    <!-- Favicon: aggiungi tu i file con questi stessi nomi nella root del progetto -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- ════════════════════════════════════════════════════════════════════════ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            chtml: { matchFontHeight: false, displayAlign: 'center' }
+        };
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#141a2c',
+                        darkcard: '#12172a',
+                        darkborder: '#2f3a56',
+                        darkcta: '#4f8ef7',
+                        darktext: '#eef1f8'
+                    }
+                }
+            }
+        }
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-10 antialiased relative">
+
+    <div class="absolute top-6 right-6 z-50 flex items-center gap-3">
+        <div class="relative inline-block text-left" id="langDropdownContainer">
+            <button onclick="toggleLangMenu()" id="lang-btn" class="flex items-center gap-2 p-2.5 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-xl shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext text-sm font-medium">
+                <span id="currentLangFlag" class="flex items-center"></span>
+                <i data-lucide="chevron-down" class="w-4 h-4 opacity-70"></i>
+            </button>
+            <div id="langMenu" class="hidden action-menu simple-menu-scroll absolute right-0 mt-2 w-44 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder shadow-xl z-50 py-1 max-h-64 overflow-y-auto"></div>
+        </div>
+
+        <button onclick="toggleDarkMode()" id="theme-btn" class="p-2.5 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-xl shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext">
+            <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+        </button>
+    </div>
+
+<div id="main-layout-wrapper" class="w-full flex-grow flex flex-col justify-start transition-all duration-500 ease-in-out">
+        
+    <header id="app-header" class="hero-overlay w-full max-w-4xl mx-auto transition-all duration-500 px-4">
+    <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-10 mt-40 text-center" id="ui-title">
+        Welcome to <span class="font-bold">Easy Bode</span>
+    </h1>
+    
+    <div class="max-w-3xl mx-auto w-full">
+        
+        <!-- Wrapper "relative": ancora della nuvoletta LaTeX, che nasce
+             esattamente al bordo inferiore di questa riga e non fa mai
+             parte del suo flusso (position:absolute) -> per costruzione
+             non può mai sovrapporsi alla barra di ricerca o al pulsante
+             CALCOLA, qualunque sia la larghezza dello schermo. -->
+        <div class="relative" id="tf-input-wrapper">
+            <div class="flex flex-col sm:flex-row sm:items-center items-stretch gap-3 justify-start">
+                <input type="text" id="tfInput" oninput="updateLatexPreview()"
+           class="w-full flex-1 px-6 py-4 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-3xl text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder-stone-400 dark:placeholder-gray-500 text-stone-800 dark:text-darktext">
+
+                <!-- CALCOLA: pulsante "split" — zona sinistra calcola,
+                     piccola barra verticale di separazione, zona destra
+                     (freccia in basso a destra) che apre il menu Esempi
+                     Suggeriti al suo interno. Ogni zona ha il proprio
+                     feedback (schiarimento + leggero scale al click)
+                     indipendente dall'altra, così è chiaro quale delle due
+                     si sta premendo. -->
+                <div class="relative flex w-full sm:w-auto rounded-3xl shadow-md" id="calc-btn-group">
+                    <button onclick="handleCalculation()" id="ui-calc-btn" type="button"
+                            class="calc-btn-zone flex-1 sm:flex-none px-8 py-4 bg-blue-900 dark:bg-blue-600 text-white font-bold cursor-pointer transition-all uppercase tracking-widest whitespace-nowrap rounded-l-3xl">
+                        CALCOLA
+                    </button>
+                    <div class="w-px bg-white/25 my-3 shrink-0"></div>
+                    <button onclick="openExamplesModal()" id="examples-toggle-btn" type="button" aria-label="Esempi Suggeriti"
+                            class="calc-btn-zone relative w-14 sm:w-16 shrink-0 bg-blue-900 dark:bg-blue-600 text-white cursor-pointer transition-all rounded-r-3xl flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 sm:w-7 sm:h-7 pointer-events-none"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    
+            </div>
+
+            <!-- Nuvoletta LaTeX: molto più stretta della vecchia "Anteprima
+                 G(s)". Compare solo mentre si digita, sparisce da sola 3s
+                 dopo l'ultima battuta e riappare alla digitazione
+                 successiva (gestito in updateLatexPreview/JS). Essendo
+                 absolute e ancorata sotto l'intera riga input+CALCOLA, non
+                 copre mai la barra di ricerca. -->
+            <div id="latexBubble" class="latex-bubble" role="status" aria-live="polite">
+                <div class="latex-bubble-arrow"></div>
+                <div class="latex-bubble-inner">
+                    <span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider opacity-40 shrink-0" id="lbl-latex-preview">Anteprima G(s):</span>
+                    <div id="latexPreview" class="text-base sm:text-xl text-stone-800 dark:text-darktext overflow-x-auto py-0.5 text-left w-full">
+                        $$G(s) = \dots$$
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="syntax-error-alert" class="hidden mt-4 text-sm text-red-600 dark:text-red-400 font-semibold uppercase tracking-wider text-center">⚠️ Errore di sintassi nella formula!</div>
+
+        <!-- Ultime 6 funzioni digitate/calcolate (localStorage), come
+             piccoli chip cliccabili subito sotto la barra di ricerca:
+             sostituisce il vecchio bottone "Storico Funzioni". Resta vuoto
+             (nessun elemento renderizzato) finché non è stata calcolata
+             almeno una funzione. -->
+        <div id="history-chips" class="mt-4 mb-14 flex flex-wrap items-center justify-center gap-2"></div>
+
+    </div>
+</header>
+
+       <div id="dynamic-results-section" class="hidden w-full max-w-6xl mx-auto mt-10 sm:mt-6 space-y-8 fade-in-content">
+             <div class="flex flex-nowrap justify-end items-center gap-2 sm:gap-3">
+                <button onclick="toggleUnits()" class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-3xl shadow-sm text-sm font-semibold cursor-pointer text-stone-800 dark:text-darktext hover:scale-105 active:scale-95 transition-all whitespace-nowrap">
+                    <i data-lucide="settings" class="w-4 h-4 shrink-0"></i>
+                    <span id="lbl-unit-btn">Unità: Hz</span>
+                </button>
+                <button onclick="downloadPDF()" class="flex items-center gap-2 px-4 py-2.5 bg-red-700 dark:bg-red-600 text-white rounded-3xl shadow-sm text-sm font-semibold cursor-pointer hover:scale-105 active:scale-95 transition-all whitespace-nowrap">
+                    <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
+                    <span id="lbl-pdf-btn">Scarica PDF</span>
+                </button>
+            </div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    <div class="card border rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+        <div>
+            <div class="flex items-center gap-2 mb-4 text-stone-500 dark:text-gray-400">
+                <i data-lucide="binary" class="w-6 h-6"></i>
+                <h3 class="text-base font-semibold uppercase tracking-wider" id="lbl-w2-title">Struttura F.d.T.</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-static-gain">Guadagno Stat. (𝘒₀)</span>
+                    <span class="text-base font-bold text-stone-800 dark:text-darktext" id="val-static-gain">--</span>
+                </div>
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-sys-type">Tipo Sistema (𝘨)</span>
+                    <span class="text-base font-bold text-stone-800 dark:text-darktext" id="val-sys-type">--</span>
+                </div>
+                <div class="col-span-2">
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-sys-order">Ordine del Sistema</span>
+                    <span class="text-base font-semibold text-stone-700 dark:text-gray-300" id="val-sys-order">--</span>
+                </div>
+            </div>
+            <div class="space-y-3 pt-4 border-t border-stone-100 dark:border-darkborder">
+                <div>
+                    <span class="block text-m font-semibold text-indigo-500 dark:text-indigo-400 uppercase tracking-tight" id="lbl-extracted-zeros-title">Zeri Estratti</span>
+                    <div class="text-xs font-mono bg-stone-50 dark:bg-darkbg p-2 rounded-xl mt-1 overflow-x-auto min-h-[28px]" id="val-extracted-zeros">--</div>
+                </div>
+                <div>
+                    <span class="block text-m font-semibold text-violet-500 dark:text-violet-400 uppercase tracking-tight" id="lbl-extracted-poles-title">Poli Estratti</span>
+                    <div class="text-xs font-mono bg-stone-50 dark:bg-darkbg p-2 rounded-xl mt-1 overflow-x-auto min-h-[28px]" id="val-extracted-poles">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+        <div>
+            <div class="flex items-center gap-2 mb-4 text-stone-500 dark:text-gray-400">
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                <h3 class="text-base font-semibold uppercase tracking-wider" id="lbl-w1-title">Stabilità & Robustezza</h3>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-pm">Margine di Fase</span>
+                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400" id="val-pm">--</span>
+                </div>
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-wc">Freq. Taglio (𝜔c)</span>
+                    <span class="text-base font-semibold text-stone-700 dark:text-gray-300" id="val-wc">--</span>
+                </div>
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-gm">Margine Guadagno</span>
+                    <span class="text-xl font-bold text-amber-600 dark:text-amber-400" id="val-gm">--</span>
+                </div>
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-w180">Freq. Inversione (𝜔180)</span>
+                    <span class="text-base font-semibold text-stone-700 dark:text-gray-300" id="val-w180">--</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-stone-100 dark:border-darkborder ">
+            <span class="block text-xs text-stone-500 dark:text-gray-400" id="lbl-ol-stability">Stabilità Anello Aperto G(s)</span>
+            <span class="text-sm font-bold uppercase tracking-wide px-2.5 py-1 rounded-md inline-block mt-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400" id="val-ol-stability">--</span>
+        </div>
+        <div class="mt-4 pt-4 border-t border-stone-100 dark:border-darkborder ">
+            <span class="block text-xs text-stone-500 dark:text-gray-400" id="lbl-cl-stability">Stabilità Anello Chiuso</span>
+            <span class="text-sm font-bold uppercase tracking-wide px-2.5 py-1 rounded-md inline-block mt-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400" id="val-cl-stability">--</span>
+        </div>
+    </div>
+
+    <div class="card border rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+        <div>
+            <div class="flex items-center gap-2 mb-4 text-stone-500 dark:text-gray-400">
+                <i data-lucide="activity" class="w-6 h-6"></i>
+                <h3 class="text-base font-semibold uppercase tracking-wider" id="lbl-w3-title">Analisi & Filtro</h3>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-resonance-peak">Picco di Risonanza</span>
+                    <span class="text-xl font-bold text-rose-600 dark:text-rose-400" id="val-resonance-peak">--</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-slope-init">Pendenza Iniz.</span>
+                        <span class="text-base font-semibold font-mono text-stone-700 dark:text-gray-300" id="val-slope-init">--</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-slope-final">Pendenza Fin.</span>
+                        <span class="text-base font-semibold font-mono text-stone-700 dark:text-gray-300" id="val-slope-final">--</span>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-stone-100 dark:border-darkborder">
+                    <span class="block text-xs text-stone-500 dark:text-gray-400 mb-0.5" id="lbl-bandwidth">Banda Passante</span>
+                    <span class="text-base font-semibold text-stone-800 dark:text-darktext block" id="val-bandwidth">--</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-stone-100 dark:border-darkborder">
+            <span class="block text-xs text-stone-500 dark:text-gray-400" id="lbl-filter-behavior">Comportamento Filtro</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-gray-300 bg-stone-100 dark:bg-darkbg px-2.5 py-1 rounded-md inline-block mt-1" id="val-filter-behavior">--</span>
+        </div>
+    </div>
+
+</div>
+
+            <main class="w-full space-y-4 sm:space-y-8 mb-4 sm:mb-8">
+                <div class="card p-3 sm:p-6 rounded-2xl sm:rounded-3xl border shadow-sm h-[460px] sm:h-[600px] flex flex-col" style="page-break-inside: avoid; break-inside: avoid;">
+                    <div class="flex items-center justify-between mb-3 sm:mb-4 px-2 sm:px-0">
+                        <h2 class="text-xs sm:text-sm font-semibold uppercase tracking-wider pt-1 sm:pt-0 text-stone-500 dark:text-gray-400" id="title-mag">Diagramma del Modulo (Magnitudo)</h2>
+                        <button type="button" onclick="toggleSemilogGrid('mag')" id="btn-semilog-mag" class="flex items-center gap-1 px-2 py-1 rounded-full text-[12px] font-bold text-stone-600 dark:text-gray-300 bg-stone-100 dark:bg-darkbg border border-stone-200 dark:border-darkborder hover:border-stone-300 dark:hover:border-gray-500 transition-all cursor-pointer shrink-0">
+                            <i data-lucide="grid-3x3" class="w-3 h-3"></i>
+                            <span id="lbl-semilog-mag">Carta Semilog</span>
+                        </button>
+                    </div>
+                    <div class="flex-grow relative h-full overflow-x-auto overflow-y-hidden" style="-webkit-overflow-scrolling: touch;">
+                        <div class="h-full min-w-[640px] sm:min-w-0 relative">
+                            <canvas id="magnitudeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mini-dock flex items-center flex-wrap justify-center lg:justify-start gap-2 sm:gap-2 lg:gap-3 mt-3 pt-3 border-t border-stone-100 dark:border-darkborder" id="mini-dock-mag">
+                        <button type="button" onclick="toggleLocalLayer('mag','real')" id="mini-btn-mag-real" class="mini-dock-btn flex items-center gap-1 lg:gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1 lg:py-1.5 rounded-full text-[12px] sm:text-[12px] lg:text-sm font-bold transition-all cursor-pointer">
+                            <i data-lucide="line-chart" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i>
+                            <span id="mini-lbl-mag-real">Reale</span>
+                        </button>
+                        <button type="button" onclick="toggleLocalLayer('mag','asymptotic')" id="mini-btn-mag-asymptotic" class="mini-dock-btn flex items-center gap-1 lg:gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1 lg:py-1.5 rounded-full text-[12px] sm:text-[12px] lg:text-sm font-bold transition-all cursor-pointer">
+                            <i data-lucide="trending-up" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i>
+                            <span id="mini-lbl-mag-asymp">Asintoti</span>
+                        </button>
+                        <button type="button" onclick="toggleLocalLayer('mag','contributions')" id="mini-btn-mag-contributions" class="mini-dock-btn flex items-center gap-1 lg:gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1 lg:py-1.5 rounded-full text-[12px] sm:text-[12px] lg:text-sm font-bold transition-all cursor-pointer">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i>
+                            <span id="mini-lbl-mag-contrib">Contributi</span>
+                        </button>
+                        <div class="hidden lg:flex flex-wrap items-center gap-1.5 ml-1" id="mini-contrib-pills-mag"></div>
+                    </div>
+                </div>
+                <div class="card p-3 sm:p-6 rounded-2xl sm:rounded-3xl border shadow-sm h-[460px] sm:h-[600px] flex flex-col" style="page-break-inside: avoid; break-inside: avoid;">
+                    <div class="flex items-center justify-between mb-3 sm:mb-4 px-2 sm:px-0">
+                        <h2 class="text-xs sm:text-sm font-semibold uppercase tracking-wider pt-1 sm:pt-0 text-stone-500 dark:text-gray-400" id="title-phase">Diagramma della Fase</h2>
+                        <button type="button" onclick="toggleSemilogGrid('phase')" id="btn-semilog-phase" class="flex items-center gap-1 px-2 py-1 rounded-full text-[12px] font-bold text-stone-600 dark:text-gray-300 bg-stone-100 dark:bg-darkbg border border-stone-200 dark:border-darkborder hover:border-stone-300 dark:hover:border-gray-500 transition-all cursor-pointer shrink-0">
+                            <i data-lucide="grid-3x3" class="w-3 h-3"></i>
+                            <span id="lbl-semilog-phase">Carta Semilog</span>
+                        </button>
+                    </div>
+                    <div class="flex-grow relative h-full overflow-x-auto overflow-y-hidden" style="-webkit-overflow-scrolling: touch;">
+                        <div class="h-full min-w-[640px] sm:min-w-0 relative">
+                            <canvas id="phaseChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mini-dock flex items-center flex-wrap justify-center lg:justify-start gap-2 sm:gap-2 lg:gap-3 mt-3 pt-3 border-t border-stone-100 dark:border-darkborder" id="mini-dock-phase">
+                        <button type="button" onclick="toggleLocalLayer('phase','real')" id="mini-btn-phase-real" class="mini-dock-btn flex items-center gap-1 lg:gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1 lg:py-1.5 rounded-full text-[12px] sm:text-[12px] lg:text-sm font-bold transition-all cursor-pointer">
+                            <i data-lucide="line-chart" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i>
+                            <span id="mini-lbl-phase-real">Reale</span>
+                        </button>
+                        <button type="button" onclick="toggleLocalLayer('phase','asymptotic')" id="mini-btn-phase-asymptotic" class="mini-dock-btn flex items-center gap-1 lg:gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1 lg:py-1.5 rounded-full text-[12px] sm:text-[12px] lg:text-sm font-bold transition-all cursor-pointer">
+                            <i data-lucide="trending-up" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i>
+                            <span id="mini-lbl-phase-asymp">Asintoti</span>
+                        </button>
+                        <button type="button" onclick="toggleLocalLayer('phase','contributions')" id="mini-btn-phase-contributions" class="mini-dock-btn flex items-center gap-1 lg:gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1 lg:py-1.5 rounded-full text-[12px] sm:text-[12px] lg:text-sm font-bold transition-all cursor-pointer">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 lg:w-4 lg:h-4"></i>
+                            <span id="mini-lbl-phase-contrib">Contributi</span>
+                        </button>
+                        <div class="hidden lg:flex flex-wrap items-center gap-1.5 ml-1" id="mini-contrib-pills-phase"></div>
+                    </div>
+                </div>
+            </main>
+
+            <div class="card border rounded-3xl p-6 shadow-sm mb-8" id="temporal-response-section">
+                <div class="flex items-center gap-2 mb-4 text-stone-500 dark:text-gray-400">
+                    <i data-lucide="waypoints" class="w-6 h-6"></i>
+                    <h3 class="text-base font-semibold uppercase tracking-wider" id="lbl-temporal-title">Studio della Risposta Temporale</h3>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-6">
+
+                    <!-- Controls + KPIs (1/3) -->
+                    <div class="flex flex-col gap-2.5 lg:col-span-1">
+                        <!-- Custom signal dropdown (no native <select>: needs inline waveform previews) — compact -->
+                        <div class="relative" id="signal-dropdown-container">
+                            <button onclick="toggleSignalMenu()" id="signal-dropdown-btn" type="button"
+                                class="w-full flex items-center justify-between gap-2 px-3 py-2 bg-stone-50 dark:bg-darkbg border border-stone-200 dark:border-darkborder rounded-xl cursor-pointer hover:border-stone-300 dark:hover:border-gray-500 transition-all text-stone-700 dark:text-gray-300">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span id="signal-btn-icon" class="w-7 h-5 flex items-center justify-center shrink-0"></span>
+                                    <span class="text-left min-w-0">
+                                        <span class="block text-xs lg:text-sm font-bold text-stone-800 dark:text-darktext truncate" id="signal-btn-name">Gradino Unitario</span>
+                                        <span class="block text-[10px] lg:text-xs text-stone-500 dark:text-gray-400 font-mono truncate" id="signal-btn-formula">u(t) = 1(t)</span>
+                                    </span>
+                                </div>
+                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-60 shrink-0"></i>
+                            </button>
+                            <div id="signal-menu" class="signal-menu absolute left-0 right-0 mt-2 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-2xl shadow-xl z-40 py-1 max-h-80 overflow-y-auto"></div>
+                        </div>
+
+                        <div class="space-y-4 lg:space-y-1.5 mt-4 lg:mt-6">
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-overshoot">Sovraelongazione Max</span>
+                                <span class="text-lg font-bold text-rose-600 dark:text-rose-400" id="val-overshoot">--</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-x-3 gap-y-3 lg:gap-y-1.5 pt-1.5 border-t border-stone-100 dark:border-darkborder">
+                                <div>
+                                    <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-yss">Valore di Regime</span>
+                                    <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-yss">--</span>
+                                </div>
+                                <div>
+                                    <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-ess">Errore a Regime</span>
+                                    <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-ess">--</span>
+                                </div>
+                                <div>
+                                    <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-tr">Tempo di Salita</span>
+                                    <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-tr">--</span>
+                                </div>
+                                <div>
+                                    <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-ts">Tempo di Assestamento</span>
+                                    <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-ts">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart + custom legend (2/3) -->
+                    <div class="flex flex-col gap-5 lg:gap-3 lg:col-span-2 min-w-0">
+                        <div class="flex items-center justify-start sm:justify-end gap-2 sm:gap-3" id="temporal-legend">
+                            <button type="button" onclick="toggleTemporalDataset(0)" id="legend-btn-output" class="legend-pill flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold transition-all">
+                                <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" id="legend-dot-output"></span>
+                                <span id="legend-label-output">Uscita</span>
+                            </button>
+                            <button type="button" onclick="toggleTemporalDataset(1)" id="legend-btn-input" class="legend-pill flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold transition-all">
+                                <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" id="legend-dot-input"></span>
+                                <span id="legend-label-input">Ingresso</span>
+                            </button>
+                        </div>
+                        <div class="h-[280px] lg:h-[380px] relative">
+                            <canvas id="temporalChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card border rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-sm mb-8" id="nyquist-section">
+                <div class="flex items-center gap-2 mb-4 text-stone-500 dark:text-gray-400">
+                    <i data-lucide="radar" class="w-6 h-6"></i>
+                    <h3 class="text-base font-semibold uppercase tracking-wider" id="lbl-nyquist-title">Diagramma di Nyquist</h3>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-6">
+
+                    <!-- Parameters (1/3) -->
+                    <div class="flex flex-col gap-2.5 lg:col-span-1 mt-4 lg:mt-6">
+                        <div>
+                            <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nyquist-stability">Stabilità Anello Chiuso</span>
+                            <span class="text-sm font-bold uppercase tracking-wider px-2.5 py-1 rounded-md inline-block mt-1" id="val-nyquist-stability">--</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-x-3 gap-y-1.5 pt-1.5 border-t border-stone-100 dark:border-darkborder">
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nyquist-p">Poli Instabili (P)</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nyquist-p">--</span>
+                            </div>
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nyquist-n">Avvolgimenti (N)</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nyquist-n">--</span>
+                            </div>
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nyquist-z">Poli Instabili A.C. (Z)</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nyquist-z">--</span>
+                            </div>
+                        </div>
+                        <div class="pt-1.5 border-t border-stone-100 dark:border-darkborder">
+                            <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nyquist-dist">Distanza min. da (-1,0)</span>
+                            <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nyquist-dist">--</span>
+                        </div>
+                        <p class="text-[11px] text-stone-400 dark:text-gray-500 pt-1.5 border-t border-stone-100 dark:border-darkborder leading-relaxed" id="lbl-nyquist-zoom-hint">Scorri per zoom, trascina per spostare. Il PDF salverà l'ultimo zoom e l'ultimo trascinamento da te scelto.</p>
+                    </div>
+
+                    <!-- Chart (2/3) -->
+                    <div class="lg:col-span-2 min-w-0">
+                        <div class="flex items-center justify-between mb-5 lg:mb-2">
+                            <button type="button" onclick="toggleHallChart()" id="btn-hall-toggle" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-stone-600 dark:text-gray-300 bg-stone-100 dark:bg-darkbg border border-stone-200 dark:border-darkborder hover:border-stone-300 dark:hover:border-gray-500 transition-all cursor-pointer">
+                                <i data-lucide="grid-3x3" class="w-3.5 h-3.5"></i>
+                                <span id="lbl-hall-toggle">Carta di Hall</span>
+                            </button>
+                            <button type="button" onclick="resetNyquistZoom()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-stone-600 dark:text-gray-300 bg-stone-100 dark:bg-darkbg border border-stone-200 dark:border-darkborder hover:border-stone-300 dark:hover:border-gray-500 transition-all cursor-pointer">
+                                <i data-lucide="maximize" class="w-3.5 h-3.5"></i>
+                                <span id="lbl-nyquist-reset">Reset Zoom</span>
+                            </button>
+                        </div>
+                        <div class="h-[300px] lg:h-[380px] relative">
+                            <canvas id="nyquistChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card border rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-sm mb-72" id="nichols-section">
+                <div class="flex items-center gap-2 mb-4 text-stone-500 dark:text-gray-400">
+                    <i data-lucide="compass" class="w-6 h-6"></i>
+                    <h3 class="text-base font-semibold uppercase tracking-wider" id="lbl-nichols-title">Diagramma di Nichols</h3>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
+
+                    <!-- Parameters (1/3) -->
+                    <div class="flex flex-col gap-2.5 lg:col-span-1 mt-4 lg:mt-6">
+                        <div class="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nichols-pm">Margine di Fase</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nichols-pm">--</span>
+                            </div>
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nichols-gm">Margine di Guadagno</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nichols-gm">--</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-x-3 gap-y-1.5 pt-1.5 border-t border-stone-100 dark:border-darkborder">
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nichols-wc">Freq. Taglio (ωc)</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nichols-wc">--</span>
+                            </div>
+                            <div>
+                                <span class="block text-[11px] lg:text-[13px] text-stone-500 dark:text-gray-400 mb-0" id="lbl-nichols-w180">Freq. Inversione (ω180)</span>
+                                <span class="text-sm font-semibold text-stone-700 dark:text-gray-300" id="val-nichols-w180">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart (2/3) -->
+                    <div class="lg:col-span-2 min-w-0">
+                        <div class="h-[300px] lg:h-[380px] relative">
+                            <canvas id="nicholsChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer id="site-footer-el" class="site-footer mt-20 hidden">
+        <div class="max-w-4xl mx-auto px-4 pt-10 md:pt-12 pb-5 md:pb-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-6 md:items-center">
+
+                <!-- Left: logo + motto only now, larger and left-aligned
+                     (also on mobile), vertically centered on desktop to
+                     visually balance the taller right column (Contatti +
+                     Buy me a coffee stacked). -->
+                <div class="flex flex-col items-start text-left">
+                    <div class="flex items-center gap-4">
+                        <!-- Sostituisci "logo.png" con il percorso della tua immagine -->
+                        <img src="bg/logo.png" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
+                        
+                    </div>
+                    <p class="mt-6 md:mt-4 text-base md:text-m text-[#f7f2e7]/80 max-w-sm">
+                        Control Systems Analysis: 
+                        Fast. Simple. Clear.
+                    </p>
+                </div>
+
+                <!-- Right: Contatti on top, Buy me a coffee underneath it,
+                     both right-aligned on desktop. -->
+                <div class="flex flex-col gap-10 md:gap-7 md:items-end">
+                    <div class="md:text-right">
+                        <p class="font-bold text-[#f7f2e7] mb-1.5 uppercase tracking-wide text-base">Contatti</p>
+                        <a href="mailto:info@easybode.com" class="text-base text-[#f7f2e7]/80 hover:text-white hover:underline transition-colors">
+                            info@easybode.com
+                        </a>
+                    </div>
+
+                    <div class="flex flex-col gap-5 md:gap-3 md:items-end md:text-right">
+                        <p class="text-base text-[#f7f2e7]/80 max-w-xs md:ml-auto">
+                            This is an independent project. If you like what we do, please support us!
+                        </p>
+                        <a href="https://www.paypal.com/donate" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 w-fit px-6 py-3.5 rounded-2xl bg-[#ffc439] hover:bg-[#ffb703] text-[#1c1917] font-semibold text-base shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all">
+                            <i data-lucide="coffee" class="w-5 h-5"></i>
+                            Buy me a coffee on PayPal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright + legal links -->
+            <div class="mt-14 md:mt-10 pt-6 border-t border-[#f7f2e7]/20 flex flex-col items-center gap-2 text-center">
+                <p class="text-sm text-[#f7f2e7]/70">&copy; 2026 Easy Bode. All rights reserved.</p>
+                <div class="flex items-center gap-3 text-sm text-[#f7f2e7]/70">
+                    <a href="/privacy-policy" class="hover:text-white hover:underline transition-colors">Privacy Policy</a>
+                    <span class="opacity-50">·</span>
+                    <a href="/cookie-policy" class="hover:text-white hover:underline transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+<!-- Esempi Suggeriti: overlay a tutto schermo con "tabella" a formato
+         fisso (4:3 desktop, 16:9 mobile), divisa per categoria. Sostituisce
+         il vecchio dropdown scrollabile. -->
+    <div id="examples-modal-backdrop" class="examples-modal-backdrop hidden" onclick="if(event.target===this) closeExamplesModal()">
+        <div class="examples-modal-card" role="dialog" aria-modal="true">
+            <div class="examples-modal-header">
+                <h3 class="examples-modal-title" id="lbl-examples-modal-title">Esempi Suggeriti</h3>
+                <button type="button" onclick="closeExamplesModal()" class="examples-modal-close" aria-label="Chiudi">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="examples-modal-body" id="examples-modal-body"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+</html>
