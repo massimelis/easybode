@@ -46,6 +46,6 @@ Examples:
 
 ## 🔒 License & Copyright
 
-© 2026 **Your Name / Your Username**. All rights reserved.
+© 2026 **Massimo Melis / massimelis**. All rights reserved.
 
 This software and its associated documentation are the exclusive property of the author. **No part of this code** may be copied, modified, distributed, reused, licensed, or sold, in whole or in part, for commercial or non-commercial purposes, without the express written permission of the author.
