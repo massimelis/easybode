@@ -64,7 +64,8 @@
             flex-grow: 1;
         }
         @media (min-width: 768px) {
-            .hero-overlay { margin-top: -2.5rem !important; } /* cancels body's md:p-10 top padding */
+            .hero-overlay { margin-top: -2.5rem !important;
+                          margin-bottom: 2.5rem; } /* cancels body's md:p-10 top padding */
         }
         /* Opaque scrim tint: warm terracotta over the light background,
            deep indigo over the dark one — same glassy effect, different
