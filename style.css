@@ -32,41 +32,190 @@
         }
         .dark body::before { background: rgba(18, 23, 40, 0.88); }
 
-        /* Header-through-preview area: a darker, translucent panel over the
-           image for contrast — this part always uses light text/icons,
-           regardless of the site's own light/dark mode, matching the
-           classic "dark scrim over hero photo" pattern. */
-        .hero-overlay {
+      .hero-overlay {
             position: relative;
             z-index: 20;
             width: 100vw !important;
             max-width: 100vw !important;
             margin-left: calc(50% - 50vw) !important;
             margin-right: calc(50% - 50vw) !important;
-            margin-top: -1rem !important; /* cancels body's own p-4 top padding */
+            margin-top: -1rem !important;
             box-sizing: border-box;
             backdrop-filter: blur(3px);
             border-radius: 0;
-            padding: 2rem 1rem;
-            /* #main-layout-wrapper (its parent) is itself flex-grow so it
-               always fills the full remaining height of the viewport. By
-               also making the header a growable flex item, the header's
-               own colored panel claims all of that space and the screen is
-               fully covered without scrolling — with nothing rendered
-               below it (dynamic-results-section is display:none pre-calc,
-               so it doesn't compete for space). Once results appear they
-               have their own natural (large) height, there's no leftover
-               space to grow into, and the header quietly goes back to its
-               normal compact size — no JS toggling required. */
+            padding: calc(var(--nav-h) + 1.25rem) 0 2rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             flex-grow: 1;
         }
         @media (min-width: 768px) {
-            .hero-overlay { margin-top: -2.5rem !important;
-                          margin-bottom: 2.5rem; } /* cancels body's md:p-10 top padding */
+            .hero-overlay { margin-top: -2.5rem !important; 
+            margin-bottom: 2.5rem;}
         }
+        /* Wraps each page's own hero content (the Home calculator, or the
+           Docs/Tour hero title+intro) so IT is what centers vertically in
+           the space left under the navbar — the navbar itself never moves. */
+        .hero-center-content {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
+        }
+        /* ── Shared top navbar (logo left / page links center / lang+dark
+           right) — lives inside .hero-overlay, on every page. ──────────── */
+     /* ── Shared top navbar — ora FIXED (sempre visibile), fuori da
+           .hero-overlay perché il backdrop-filter di quest'ultimo
+           creerebbe un containing block che "intrappola" position:fixed.
+           Effetto vetro + linea di demarcazione sottile in basso. ────── */
+        :root { --nav-h: 4.25rem; }
+        .site-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            height: var(--nav-h);
+            width: 100%;
+            display: flex;
+            align-items: left;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0 1rem;
+            box-sizing: border-box;
+            background: rgba(250, 246, 239, 0.72);
+            backdrop-filter: blur(14px) saturate(160%);
+            -webkit-backdrop-filter: blur(14px) saturate(160%);
+            border-bottom: 1px solid rgba(138, 82, 46, 0.16);
+        }
+        .dark .site-nav {
+            background: rgba(18, 23, 42, 0.68);
+            border-bottom-color: rgba(247, 242, 231, 0.12);
+        }
+        @media (min-width: 768px) {
+            .site-nav { padding: 0 2rem; }
+        }
+       
+        .site-nav-logo { display: none; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+        @media (min-width: 640px) {
+            .site-nav-logo { display: flex; }
+        }
+
+        .site-nav-links {
+            display: none;
+            align-items: center;
+            gap: 2rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        @media (min-width: 640px) {
+            .site-nav-links { display: flex; }
+        }
+
+        .nav-link {
+            color: #292524;
+            opacity: 0.8;
+            text-decoration: none;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            transition: opacity 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            white-space: nowrap;
+        }
+        .dark .nav-link { color: #eef1f8; }
+        .nav-link:hover { opacity: 1; }
+        .nav-link.active { opacity: 1; color: #292524; font-size: 1.2rem; font-weight: 700;}
+        .dark .nav-link.active { color: #eef1f8; }
+
+        /* Hamburger: visibile solo sotto i 640px */
+        .site-nav-hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000000;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 0.6rem;
+            transition: background-color 0.15s ease;
+        }
+        .dark .site-nav-hamburger { color: #d6dcec; }
+        .site-nav-hamburger:hover { background: rgba(138, 82, 46, 0.1); }
+        @media (min-width: 640px) {
+            .site-nav-hamburger { display: none; }
+        }
+
+        /* ── Mobile drawer: entra da sinistra, in cascata logo → link ──── */
+        .mobile-menu-backdrop {
+            position: fixed; inset: 0; z-index: 150;
+            background: rgba(20, 16, 12, 0.55);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .mobile-menu-backdrop.hidden { display: none; }
+        .mobile-menu-backdrop.open { opacity: 1; pointer-events: auto; }
+
+        .mobile-menu-drawer {
+            position: fixed; top: 0; left: 0; bottom: 0;
+            z-index: 200;
+            width: min(78vw, 300px);
+            background: rgba(250, 246, 239, 0.72);
+            backdrop-filter: blur(14px) saturate(160%);
+            -webkit-backdrop-filter: blur(14px) saturate(160%);
+            border-right: 1px solid rgba(138, 82, 46, 0.16);
+            box-shadow: 12px 0 30px -10px rgba(0,0,0,0.25);
+            transform: translateX(-100%);
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            border-top-right-radius: 50px;
+        }
+        .dark .mobile-menu-drawer {
+            background: rgba(18, 23, 42, 0.68);
+            border-right-color: rgba(247, 242, 231, 0.12);
+        }
+      
+        .mobile-menu-drawer.open { transform: translateX(0); }
+.mobile-menu-logo { height: 2.5rem; }
+        .mobile-menu-drawer-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.1rem 1.25rem;
+            border-bottom: 1px solid #e8ddc9;
+        }
+        .dark .mobile-menu-drawer-header { border-bottom-color: #2f3a56; }
+        .mobile-menu-close {
+            color: #8a8377; background: transparent; border: none; cursor: pointer;
+            padding: 0.35rem; border-radius: 9999px; transition: background-color 0.15s ease;
+        }
+        .mobile-menu-close:hover { background-color: rgba(120,113,108,0.12); }
+        .dark .mobile-menu-close { color: #7c87a3; }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 1.5rem 0.75rem;
+        }
+        .mobile-menu-link {
+            padding: 0.9rem 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #292524;
+            text-decoration: none;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+        .dark .mobile-menu-link { color: #eef1f8; }
+        .mobile-menu-link:hover { background-color: rgba(138, 82, 46, 0.08); }
+        .mobile-menu-link.active { color: #8a522e; background-color: rgba(138, 82, 46, 0.1); }
+        .dark .mobile-menu-link.active { color: #f7f2e7; background-color: rgba(247, 242, 231, 0.08); }
+        .nav-link:hover { opacity: 1; }
+        .nav-link.active { opacity: 1; border-bottom-color: #ffffff; }
         /* Opaque scrim tint: warm terracotta over the light background,
            deep indigo over the dark one — same glassy effect, different
            mood per theme. Text stays light on both since the scrim is
@@ -482,4 +631,24 @@
 .examples-modal-item-expr { font-family: monospace; font-weight: 700; font-size: 0.9rem; }
 .examples-modal-item-label { font-size: 0.75rem; color: #8a8377; }
 .dark .examples-modal-item-label { color: #9aa5c0; }
-    
+
+/* ── Docs chapter cards ───────────────────────────────────────────────────
+   Reuse the exact same .card look (color + border-radius) as every other
+   card in the app, so the documentation feels like part of the same site
+   instead of a bolted-on page. */
+.docs-chapter-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.85rem;
+    background: rgba(138, 82, 46, 0.12);
+    color: #8a522e;
+    flex-shrink: 0;
+}
+.dark .docs-chapter-icon {
+    background: rgba(79, 142, 247, 0.15);
+    color: #4f8ef7;
+}
+

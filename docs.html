@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation — Easy Bode</title>
+
+    <!-- ═══════════════════════ SEO & social sharing ═══════════════════════ -->
+    <meta name="description" content="Easy Bode documentation: understand every element of the Bode, Nyquist and Nichols diagrams, poles and zeros, stability margins and transfer function analysis.">
+    <link rel="canonical" href="https://massimelis.github.io/easybode/docs.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Easy Bode">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="https://massimelis.github.io/easybode/docs.html">
+    <meta property="og:title" content="Easy Bode — Documentation">
+    <meta property="og:description" content="Understand every element of the Bode, Nyquist and Nichols diagrams, poles and zeros, stability margins and transfer function analysis.">
+    <meta property="og:image" content="https://massimelis.github.io/easybode/bg/og-image.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Easy Bode — Documentation">
+    <meta name="twitter:description" content="Understand every element of the Bode, Nyquist and Nichols diagrams, poles and zeros, stability margins and transfer function analysis.">
+    <meta name="twitter:image" content="https://massimelis.github.io/easybode/bg/og-image.png">
+
+    <meta name="theme-color" content="#8a522e" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#201b3d" media="(prefers-color-scheme: dark)">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            chtml: { matchFontHeight: false, displayAlign: 'center' }
+        };
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#141a2c',
+                        darkcard: '#12172a',
+                        darkborder: '#2f3a56',
+                        darkcta: '#4f8ef7',
+                        darktext: '#eef1f8'
+                    }
+                }
+            }
+        }
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-10 antialiased relative">
+<!-- ═══════════════ Shared top navbar — fixed, glass, identical on every page ═══════════════ -->
+    <nav class="site-nav">
+        <a href="index.html" class="site-nav-logo" aria-label="Easy Bode — Home">
+            <img src="bg/logo.jpg" alt="Easy Bode" class="h-8 sm:h-9 w-auto object-contain rounded-lg">
+        </a>
+
+        <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="site-nav-hamburger" aria-label="Apri menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <div class="site-nav-links">
+            <a href="index.html" id="nav-link-home" class="nav-link">Home</a>
+            <a href="docs.html" id="nav-link-docs" class="nav-link">Docs</a>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div class="relative inline-block text-left" id="langDropdownContainer">
+                <button onclick="toggleLangMenu()" id="lang-btn" class="flex items-center gap-2 p-2 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext text-sm font-medium">
+                    <span id="currentLangFlag" class="flex items-center"></span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 opacity-70"></i>
+                </button>
+                <div id="langMenu" class="hidden action-menu simple-menu-scroll absolute right-0 mt-2 w-44 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder shadow-xl z-50 py-1 max-h-64 overflow-y-auto"></div>
+            </div>
+
+            <button onclick="toggleDarkMode()" id="theme-btn" class="p-2 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext">
+                <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile drawer: si apre da sinistra, in cascata logo → Home → Docs → Tour -->
+    <div id="mobile-menu-backdrop" class="mobile-menu-backdrop hidden" onclick="closeMobileMenu()"></div>
+    <aside id="mobile-menu-drawer" class="mobile-menu-drawer">
+        <div class="mobile-menu-drawer-header">
+            <img src="bg/logo.png" alt="Easy Bode" class="h-14 w-auto object-contain rounded-lg">
+            <button onclick="closeMobileMenu()" class="mobile-menu-close" aria-label="Chiudi menu">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <nav class="mobile-menu-links">
+            <a href="index.html" id="nav-link-home" class="nav-link active" id="mobile-nav-link-home" class="mobile-menu-link">Home</a>
+            <a href="docs.html" id="nav-link-docs" class="nav-link active" id="mobile-nav-link-docs" class="mobile-menu-link">Docs</a>
+            
+        </nav>
+    </aside>
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════════ -->
+
+    <div id="main-layout-wrapper" class="w-full flex-grow flex flex-col justify-start transition-all duration-500 ease-in-out">
+    <div id="main-layout-wrapper" class="w-full flex-grow flex flex-col justify-start transition-all duration-500 ease-in-out">
+
+    <header id="app-header" class="hero-overlay w-full transition-all duration-500">
+        
+
+        <div class="hero-center-content max-w-4xl mx-auto w-full">
+            <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 mt-16 sm:mt-24 text-center">
+                Easy Bode <span class="font-bold">Documentation</span>
+            </h1>
+            <p class="text-center text-base md:text-lg max-w-2xl mx-auto opacity-80 mb-10">
+                A chapter-by-chapter guide to every diagram, panel and data point in Easy Bode — currently being written.
+                <span class="block mt-2 text-sm opacity-70">Documentation is available in English.</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════ Documentation chapters ═══════════════════════
+         One card per graph/analysis card found on the Home page, in the
+         same order they appear there. Placeholder (Lorem Ipsum) body text
+         for now — the short italic line at the top of each card states
+         what the finished chapter will actually cover. -->
+    <div class="w-full max-w-6xl mx-auto mt-16 px-4" id="docs-content">
+
+ <!-- 1. Transfer Function Structure -->
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="docs-chapter-icon"><i data-lucide="binary" class="w-5 h-5"></i></span>
+                    <div>
+                        <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 1</span>
+                        <h2 class="text-lg font-semibold">Transfer Function Structure</h2>
+                    </div>
+                </div>
+                <p class="text-sm italic opacity-70 mb-3">This chapter will explain how G(s) is parsed.</p>
+                <div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
+                    <p>The transfer function is the Laplace transform of the impulse response. It defines the algebraic relationship between the input and the output in the frequency domain, describing the overall dynamic behavior of the system. Formally, given an input $U(s)$ and an output $Y(s)$ under zero initial conditions, the transfer function $G(s)$ is expressed as:$$G(s) = \frac{Y(s)}{U(s)} = \mathcal{L}\{g(t)\}$$where $g(t)$ represents the system's impulse response, and $s = \sigma + j\omega$ is the Laplace variable.</p>
+                </div>
+                
+    <hr class="my-2 border-stone-200 dark:border-darkborder mb-3">
+                
+<div>
+    <h3 class="text-base font-semibold mb-3 mt-2">1. Elements of a Transfer Function</h3>
+    <p class="text-sm leading-relaxed opacity-90 mb-3">To facilitate analysis and plotting, the transfer function is factored and broken down into its fundamental building blocks: a gain constant \(K\), poles, and zeros. This factorization allows the complex overall response to be analyzed as the sum of simpler individual contributions.</p>
+    <ul class="list-disc pl-5 space-y-3 text-sm leading-relaxed opacity-90">
+        <li><strong>Gain constant (\(K\)):</strong> represents the overall gain of the system.</li>
+        <li><strong>Zeros:</strong> values of the Laplace variable \(s\) that make the numerator of the transfer function zero (\(G(s) = 0\)). Physically, they tend to attenuate or block specific frequencies.</li>
+        <li><strong>Poles:</strong> values of \(s\) that make the denominator zero, causing the function to approach infinity (\(G(s) \to \infty\)). They define the system's stability and resonant frequencies.</li>
+    </ul>
+</div>
+
+  <div class="mt-5 rounded-xl border border-stone-200 dark:border-darkborder bg-stone-50 dark:bg-darkbg p-4">
+                    <p class="text-xs font-semibold uppercase tracking-wider opacity-60 mb-2">In Easy Bode</p>
+                    <p class="text-sm leading-relaxed opacity-90">We have included an input bar so you can enter and calculate transfer functions. Additionally,next to the 'Calculate' button, there is a menu featuring numerous examples of various types.</p>
+            </div>
+            </div>
+
+ <!-- 4. Bode Diagram — Magnitude -->
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 mb-6 shadow-sm">
+           <div class="flex items-center gap-4 mb-4">
+    <span class="docs-chapter-icon"><i data-lucide="bar-chart-3" class="w-5 h-5"></i></span>
+    <div>
+        <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 2</span>
+        <h2 class="text-lg font-bold text-stone-800 dark:text-darktext">The Bode Plot</h2>
+    </div>
+</div>
+<p class="text-sm italic opacity-70 mb-3">This chapter shows how, starting from the contributions of the transfer function $G(s)$, the magnitude and phase Bode plots are drawn.</p>
+<div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
+
+    <p>The <strong>Bode plot</strong> is the quintessential graphical tool for representing the frequency response of a transfer function. It consists of two separate graphs showing respectively the magnitude (amplitude) and phase of the complex function.</p>
+
+    <p>The abscissa of both graphs has frequency (\(f\), in \(\text{Hz}\)) or angular frequency (\(\omega\), in \(\text{rad/s}\)) as its unit of measurement. The ordinate axis of the magnitude plot has the magnitude of the transfer function expressed in decibels (\(\text{dB}\)), while the ordinate axis of the phase plot contains the phase of the transfer function expressed in degrees (\(^\circ\)).</p>
+
+    <p>Bode plots make use of <strong>semi-logarithmic charts</strong>, so named because only the horizontal axis is on a logarithmic scale.</p>
+
+    <p>There are precise rules for drawing Bode plots for each individual contribution:</p>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">1. Gain Constant (\(K\))</h3>
+        <p class="mb-2">It represents the global multiplicative factor of the system (or the zero-frequency gain if there are no poles/zeros at the origin).</p>
+        <ul class="list-disc pl-5 space-y-1 mt-3">
+            <li><strong>Magnitude:</strong> \(20 \log_{10}(|K|)\) \(\text{dB}\). It is a horizontal straight line independent of frequency.</li>
+            <li><strong>Phase:</strong>
+                <ul class="list-[circle] pl-5 mt-1 space-y-1">
+                    <li>\(0^\circ\) if \(K > 0\).</li>
+                    <li>\(-180^\circ\) (or \(+180^\circ\)) if \(K < 0\).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">2. Poles and Zeros at the Origin (\(s^{\pm h}\))</h3>
+        <p class="mb-2">Factors of the type \(s\) (zero) or \(\frac{1}{s}\) (pole) raised to a certain multiplicity \(h\).</p>
+        <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li><strong>Pole at the origin (\(\frac{1}{s}\)):</strong>
+                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                    <li><strong>Magnitude:</strong> straight line with a slope of \(-20\ \text{dB/decade}\) passing through \(0\ \text{dB}\) at the frequency \(\omega = 1\ \text{rad/s}\).</li>
+                    <li><strong>Phase:</strong> constant at \(-90^\circ\) for all frequencies.</li>
+                </ul>
+            </li>
+            <li><strong>Zero at the origin (\(s\)):</strong>
+                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                    <li><strong>Magnitude:</strong> straight line with a slope of \(+20\ \text{dB/decade}\) passing through \(0\ \text{dB}\) at the frequency \(\omega = 1\ \text{rad/s}\).</li>
+                    <li><strong>Phase:</strong> constant at \(+90^\circ\) for all frequencies.</li>
+                </ul>
+            </li>
+        </ul>
+        <p class="mt-3 text-xs italic text-stone-500 dark:text-gray-400">Note: if the multiplicity is \(h\), the slope and phase must be multiplied by \(h\).</p>
+    </div>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">3. Real Poles and Zeros (Normal / First-Order)</h3>
+        <p class="mb-2">Factors of the type \((1 + \tau s)\) for zeros and \(\frac{1}{1 + \tau s}\) for poles, where \(\omega_c = \frac{1}{\tau}\) is the cutoff frequency (or transition frequency).</p>
+        <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li><strong>Real pole:</strong>
+                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                    <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_c\); straight line with a slope of \(-20\ \text{dB/decade}\) for \(\omega > \omega_c\).</li>
+                    <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_c\); \(-90^\circ\) for \(\omega \gg \omega_c\); at \(\omega = \omega_c\) the phase is exactly \(-45^\circ\).</li>
+                </ul>
+            </li>
+            <li><strong>Real zero:</strong>
+                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                    <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_c\); straight line with a slope of \(+20\ \text{dB/decade}\) for \(\omega > \omega_c\).</li>
+                    <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_c\); \(+90^\circ\) for \(\omega \gg \omega_c\); at \(\omega = \omega_c\) the phase is exactly \(+45^\circ\).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">4. Complex Conjugate Poles and Zeros (Second-Order)</h3>
+        <p class="mb-2">Factors of the type \(1 + \frac{2\zeta}{\omega_n}s + \frac{s^2}{\omega_n^2}\) (zeros) or their inverse (poles), characterized by a natural frequency \(\omega_n\) and a damping ratio \(\zeta\) (with \(0 < \zeta < 1\)).</p>
+        <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li><strong>Complex conjugate pole:</strong>
+                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                    <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_n\); straight line with a slope of \(-40\ \text{dB/decade}\) for \(\omega > \omega_n\). Near \(\omega_n\), it exhibits a resonance peak that is more pronounced the smaller \(\zeta\) is.</li>
+                    <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_n\); \(-180^\circ\) for \(\omega \gg \omega_n\); at \(\omega = \omega_n\) the phase is exactly \(-90^\circ\) (independent of \(\zeta\)).</li>
+                </ul>
+            </li>
+            <li><strong>Complex conjugate zero:</strong>
+                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                    <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_n\); straight line with a slope of \(+40\ \text{dB/decade}\) for \(\omega > \omega_n\). It exhibits a dip (valley) at \(\omega_n\) if \(\zeta\) is small.</li>
+                    <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_n\); \(+180^\circ\) for \(\omega \gg \omega_n\); at \(\omega = \omega_n\) the phase is exactly \(+90^\circ\).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2"> 5. Real Plot</h3>
+        <p class="mb-2"> Before the advent of numerical computing, engineers could not afford to calculate the frequency response point by point: a rapid method was needed to hand-draw a sufficiently accurate diagram. Asymptotic approximation was created for precisely this reason — it replaces the true curve, which is generally a continuous curve, with a broken line made of straight segments, which is simpler to draw and to read.</p>
+        <ul class="list-disc pl-5 space-y-2 mt-3">
+            <li><strong>Techniques:</strong></li>
+              <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <li><strong>sum of contributions:</strong> The Bode plot of the entire transfer function can be constructed by adding up, point by point, the contribution of each individual pole and zero.</li>
+              <li><strong>Approximation:</strong>For a real pole or zero, the maximum deviation between the real curve and the asymptotic broken line occurs exactly at the cut-off frequency $\omega_c$, where it is about $3\ \text{dB}$ in magnitude (and the phase there is exact anyway: $\pm45^\circ$).
+            For complex conjugate poles or zeros, the situation changes: the deviation from the asymptote near $\omega_n$ depends heavily on the damping factor $\zeta$. With a small $\zeta$, a resonance peak (or dip) appears that straight lines cannot show.</li>
+            </ul>
+        </ul>
+    </div>
+
+                <div class="mt-5 rounded-xl border border-stone-200 dark:border-darkborder bg-stone-50 dark:bg-darkbg p-4">
+                    <p class="text-xs font-semibold uppercase tracking-wider opacity-60 mb-2">In Easy Bode</p>
+                    <p class="text-sm leading-relaxed opacity-90">Easy Bode lets you compare the Real and Asymptotes curves directly to see this difference.Just like the magnitude chart, the <strong>Real</strong>, <strong>Asymptotic</strong> and <strong>Contributions</strong> buttons let you compare the true phase curve against its asymptotic approximation and each individual pole/zero contribution, and <strong>Carta Semilog</strong> adds the grid.</p>
+            </div>
+
+            
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+            <!-- 2. Stability & Robustness -->
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="docs-chapter-icon"><i data-lucide="shield-check" class="w-5 h-5"></i></span>
+                    <div>
+                        <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 3</span>
+                        <h2 class="text-lg font-semibold">Stability &amp; Robustness</h2>
+                    </div>
+                </div>
+                <p class="text-sm italic opacity-70 mb-3">This section explains how to evaluate the stability and robustness of a control system using its frequency response.</p>
+    <div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
+
+    <p>Analyzing the frequency response of an <strong>open-loop system</strong> allows us to determine the stability and performance of the corresponding <strong>closed-loop system</strong>.</p>
+
+    <p>Here are the fundamental parameters used to assess system stability:</p>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">1. System Stability</h3>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Open-Loop Stability:</strong> Determines if the system is stable without feedback. It depends entirely on the poles of the open-loop transfer function.</li>
+            <li><strong>Closed-Loop Stability:</strong> Assesses if the system remains stable when a feedback loop is closed around it. It is evaluated by checking the stability margins on the open-loop Bode plot.</li>
+        </ul>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">2. Cut-off frequency ($\omega_{gc}$)</h3>
+        <p>It is the frequency at which the open-loop magnitude crosses $0\ \text{dB}$ (where the linear gain is exactly $1$). It serves as the reference point for calculating the phase margin.</p>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">3. Phase Margin (PM)</h3>
+        <p>The amount of additional phase lag at the gain crossover frequency that would push the system to the edge of instability. Calculated as $\text{PM} = 180^\circ + \angle G(j\omega_{gc})$. A positive phase margin is required for closed-loop stability.</p>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">4. Phase Crossover Frequency ($\omega_{pc}$)</h3>
+        <p>The frequency at which the open-loop phase angle crosses $-180^\circ$. It acts as the reference point for calculating the gain margin.</p>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">5. Gain Margin (GM)</h3>
+        <p>The amount of additional gain (in $\text{dB}$) that can be applied to the system at the phase crossover frequency before it becomes unstable. Calculated as $\text{GM} = -|G(j\omega_{pc})|_{\text{dB}}$. A positive gain margin indicates a stable system.</p>
+    </div>
+
+    </div>
+            </div>
+
+            <!-- 3. Analysis & Filter Type -->
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="docs-chapter-icon"><i data-lucide="activity" class="w-5 h-5"></i></span>
+                    <div>
+                        <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 4</span>
+                        <h2 class="text-lg font-semibold">Analysis &amp; Filter Type</h2>
+                    </div>
+                </div>
+
+                <p class="text-sm italic opacity-70 mb-3">This section covers key Bode plot parameters, including asymptotic slopes, resonance, bandwidth, and fundamental filter classifications.</p>
+    <div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
+
+    <p>The visual characteristics of the Bode magnitude plot define the dynamic performance, frequency selectivity, and filtering capabilities of a system.</p>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">1. Initial and Final Slopes</h3>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Initial Slope:</strong> Determined by poles/zeros at the origin ($s^g$). Each integrator contributes $-20\ \text{dB/dec}$ and each differentiator $+20\ \text{dB/dec}$ at low frequencies.</li>
+            <li><strong>Final Slope:</strong> Fixed by the system's relative degree $(n - m)$. High frequencies roll off at $-20(n - m)\ \text{dB/dec}$.</li>
+        </ul>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">2. Resonant Peak ($M_r$)</h3>
+        <p>The maximum peak in magnitude occurring at the resonant frequency ($\omega_r$). It appears in complex conjugate pole pairs when the damping ratio is low ($\zeta < 0.707$).</p>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">3. Bandwidth ($\omega_B$)</h3>
+        <p>The frequency range over which the system gain remains within $-3\ \text{dB}$ of its maximum value. It defines the system's operational speed and filtering cutoff.</p>
+    </div>
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">4. Filter Behaviors</h3>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Low-Pass:</strong> Passes low frequencies, attenuates high frequencies.</li>
+            <li><strong>High-Pass:</strong> Passes high frequencies, blocks low frequencies (requires initial slope $> 0$).</li>
+            <li><strong>Band-Pass:</strong> Passes frequencies within a specific range, attenuating both lower and higher frequencies.</li>
+            <li><strong>Band-Stop (Notch):</strong> Attenuates a specific frequency range while letting lower and higher frequencies pass.</li>
+            <li><strong>All-Pass:</strong> Passes all frequencies with equal amplitude, changing only the phase response of the system.</li>
+        </ul>
+    </div>
+
+    </div>
+                
+        </div>
+
+            <!-- 6. Temporal (Step) Response -->
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="docs-chapter-icon"><i data-lucide="waypoints" class="w-5 h-5"></i></span>
+                    <div>
+                        <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 5</span>
+                        <h2 class="text-lg font-semibold">Temporal (Step) Response</h2>
+                    </div>
+                </div>
+             <p class="text-sm italic opacity-70 mb-3">This section provides a brief theoretical overview of time-domain response analysis, evaluating how a system behaves over time when subjected to specific inputs.</p>
+<div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
+
+    <p>The <strong>time response</strong> of a dynamic system represents the output $y(t)$ as a function of time when an input signal $u(t)$ is applied. It is composed of two distinct parts: the <strong>transient response</strong> (the temporary behavior right after excitation) and the <strong>steady-state response</strong> (the long-term behavior as $t \to \infty$).</p>
+
+    <p>Analyzing time response allows engineers to quantify speed, dampening, stability, and accuracy directly in the time domain.</p>
+
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+    <div>
+        <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">1. Transient and Steady-State Metrics</h3>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Rise Time ($t_r$):</strong> The time required for the response to rise from $10\%$ to $90\%$ (or $0\%$ to $100\%$) of its final value, indicating initial response speed.</li>
+            <li><strong>Settling Time ($t_s$):</strong> The time needed for the output to enter and permanently stay within a specified error band (typically $\pm 2\%$ or $\pm 5\%$) around the steady-state value.</li>
+            <li><strong>Maximum Overshoot ($M_p$):</strong> The maximum peak value of the response measured from the steady-state value, expressed as a percentage. It reflects system damping.</li>
+            <li><strong>Steady-State Value ($y_{ss}$) & Error ($e_{ss}$):</strong> $y_{ss}$ is the final value reached by the output as time approaches infinity. $e_{ss}$ is the difference between the desired reference input and $y_{ss}$, measuring accuracy.</li>
+        </ul>
+    </div>
+
+    <div class="mt-5 rounded-xl border border-stone-200 dark:border-darkborder bg-stone-50 dark:bg-darkbg p-4">
+        <p class="text-xs font-semibold uppercase tracking-wider opacity-60 mb-2">In Easy Bode</p>
+        <p class="text-sm leading-relaxed opacity-90">Easy Bode includes a dedicated time-response graph displaying both the applied <strong>input signal</strong> and the resulting system <strong>output curve</strong> simultaneously. A selector lets you switch between 5 fundamental input types: <strong>Unit Step</strong>, <strong>Impulse</strong>, <strong>Ramp</strong>, <strong>Square Wave</strong>, and <strong>Sine Wave</strong>. Alongside the plot, key calculated parameters are automatically presented, including <strong>Maximum Overshoot</strong>, <strong>Steady-State Value</strong>, <strong>Steady-State Error</strong>, <strong>Rise Time</strong>, and <strong>Settling Time</strong>.</p>
+    </div>
+
+</div>
+            </div>
+
+            
+          <!-- 7. Nyquist Diagram -->
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="docs-chapter-icon"><i data-lucide="radar" class="w-5 h-5"></i></span>
+                    <div>
+                        <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 6</span>
+                        <h2 class="text-lg font-semibold">The Nyquist Diagram</h2>
+                    </div>
+                </div>
+
+                <p class="text-sm leading-relaxed opacity-90">The <strong>Nyquist diagram</strong> is a fundamental graphical tool in automatic control theory. Unlike Bode diagrams, which use two separate plots for magnitude and phase, the Nyquist diagram traces the frequency response of a transfer function \(G(j\omega)\) directly in the complex plane, as the angular frequency \(\omega\) varies over the interval \((-\infty, +\infty)\).</p>
+
+                <hr class="my-4 border-stone-200 dark:border-darkborder">
+
+                <div class="mb-3">
+                    <h3 class="text-base font-semibold mb-3">1. Geometric Properties and Symmetry</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-3">In the complex plane, the horizontal axis represents the real part, while the vertical axis represents the imaginary part.</p>
+                    <ul class="list-disc pl-5 space-y-3 text-sm leading-relaxed opacity-90">
+                        <li>For real physical systems, the plot for negative frequencies (\(\omega < 0\)) is the mirror image, about the real axis, of the plot traced for positive frequencies (\(\omega > 0\)).</li>
+                        <li>It is therefore sufficient to trace the curve for \(\omega \in [0, +\infty)\) and complete it by symmetry.</li>
+                    </ul>
+                </div>
+
+                <hr class="my-4 border-stone-200 dark:border-darkborder">
+
+                <div class="mb-3">
+                    <h3 class="text-base font-semibold mb-3">2. The Nyquist Stability Criterion</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-3">The most important aspect of the diagram lies in the <strong>Nyquist Criterion</strong>: this theorem makes it possible to determine the absolute stability of the closed-loop feedback system by analyzing only the behavior of the open-loop transfer function \(G(j\omega)H(j\omega)\) in the complex plane.</p>
+                    
+                </div>
+
+                <hr class="my-4 border-stone-200 dark:border-darkborder">
+
+                <div class="mb-3">
+                    <h3 class="text-base font-semibold mb-3">3. The Critical Point (\(-1, j0\))</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-3">In the Nyquist diagram, the critical point at coordinates \((-1, j0)\) is of vital importance.</p>
+                    <ul class="list-disc pl-5 space-y-3 text-sm leading-relaxed opacity-90">
+                        <li>The position of the diagram relative to this point makes it possible to assess not only the stability of the closed-loop system, but also the stability margins (gain margin and phase margin).</li>
+                        <li>If the open-loop diagram encircles the critical point \((-1, j0)\), the closed-loop feedback system will generally be unstable.</li>
+                    </ul>
+                </div>
+
+                <hr class="my-4 border-stone-200 dark:border-darkborder">
+
+                <div>
+                    <h3 class="text-base font-semibold mb-3">4. Open-Loop Poles and the \(Z = P + N\) Relationship</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-3">To correctly apply the Nyquist Criterion, it is essential to know in advance the number of unstable poles (with positive real part) of the open-loop transfer function, usually denoted by the letter \(P\).</p>
+                    <p class="text-sm leading-relaxed opacity-90 mb-3">The fundamental formula of the criterion relates the number of encirclements \(N\) made by the diagram around the critical point \((-1, j0)\), the number of unstable open-loop poles \(P\), and the number of unstable closed-loop poles \(Z\):</p>
+                    <p class="text-center text-base font-semibold py-2">\[ Z = P + N \]</p>
+                </div>
+                
+                <div class="mt-5 rounded-xl border border-stone-200 dark:border-darkborder bg-stone-50 dark:bg-darkbg p-4">
+                    <p class="text-xs font-semibold uppercase tracking-wider opacity-60 mb-2">In Easy Bode</p>
+                    <p class="text-sm leading-relaxed opacity-90">The data panel next to the Nyquist diagram shows exactly these quantities, computed automatically from the transfer function you enter: <strong>Poli Instabili (P)</strong> is the open-loop pole count \(P\), <strong>Avvolgimenti (N)</strong> is the number of encirclements \(N\), and <strong>Poli Instabili A.C. (Z)</strong> is the resulting closed-loop pole count \(Z = P + N\). The <strong>Stabilità Anello Chiuso</strong> badge is simply this \(Z\) value read out as a verdict — "stable" whenever \(Z = 0\). The <strong>Distanza min. da (-1,0)</strong> field is the minimum-distance indicator described above: the smaller it is, the closer the system sits to instability.</p>
+                </div>
+            </div>
+            
+
+             <!-- 8. Nichols Diagram -->
+                <div>
+                    <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="docs-chapter-icon"><i data-lucide="compass" class="w-5 h-5"></i></span>
+                            <div>
+                                <span class="block text-[11px] uppercase tracking-wider opacity-50">Chapter 7</span>
+                                <h2 class="text-lg font-semibold">Nichols Diagram</h2>
+                            </div>
+                        </div>
+
+                    <p class="text-sm italic opacity-70 mb-3">This section introduces the Nichols chart, a combined magnitude-phase representation used to analyze open-loop and closed-loop frequency response.</p>
+                    <div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
+
+                    <p>The <strong>Nichols plot</strong> displays the open-loop magnitude (in $\text{dB}$) on the vertical axis against the open-loop phase (in degrees, $^\circ$) on the horizontal axis, with frequency ($\omega$) acting as an implicit parameter along the curve.</p>
+
+                    <p>It unifies magnitude and phase into a single parametric trajectory, making it particularly useful for evaluating stability margins and mapping open-loop performance directly onto closed-loop response contours.</p>
+
+                    <hr class="my-2 border-stone-200 dark:border-darkborder">
+
+                    <div>
+                    <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">Key Features</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Critical Point:</strong> The point $(-180^\circ, 0\ \text{dB})$ represents the threshold of closed-loop instability.</li>
+                        <li><strong>Stability Geometry:</strong> Phase Margin and Gain Margin are measured directly as horizontal and vertical distances from the curve to the critical point $(-180^\circ, 0\ \text{dB})$.</li>
+                    </ul>
+                    </div>
+
+                    <div class="mt-5 rounded-xl border border-stone-200 dark:border-darkborder bg-stone-50 dark:bg-darkbg p-4">
+                    <p class="text-xs font-semibold uppercase tracking-wider opacity-60 mb-2">In Easy Bode</p>
+                    <p class="text-sm leading-relaxed opacity-90">In the Easy Bode Nichols chart view, key stability parameters—including the <strong>Phase Margin</strong>, <strong>Gain Crossover Frequency</strong>, <strong>Phase Crossover Frequency</strong>, and <strong>Gain Margin</strong>—are integrated and displayed directly alongside the trajectory.</p>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <footer id="site-footer-el" class="site-footer mt-20">
+        <div class="max-w-4xl mx-auto px-4 pt-10 md:pt-12 pb-5 md:pb-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-6 md:items-center">
+                <div class="flex flex-col items-start text-left">
+                    <div class="flex items-center gap-4">
+                        <img src="bg/logo.jpg" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
+                    </div>
+                    <p class="mt-6 md:mt-4 text-base md:text-m text-[#f7f2e7]/80 max-w-sm">
+                        Control Systems Analysis:
+                        Fast. Simple. Clear.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-10 md:gap-7 md:items-end">
+                    <div class="md:text-right">
+                        <p class="font-bold text-[#f7f2e7] mb-1.5 uppercase tracking-wide text-base">Contact</p>
+                        <a href="mailto:info@easybode.com" class="text-base text-[#f7f2e7]/80 hover:text-white hover:underline transition-colors">
+                            info@easybode.com
+                        </a>
+                    </div>
+
+                    <div class="flex flex-col gap-5 md:gap-3 md:items-end md:text-right">
+                        <p class="text-base text-[#f7f2e7]/80 max-w-xs md:ml-auto">
+                            This is an independent project. If you like what we do, please support us!
+                        </p>
+                        <a href="https://www.paypal.com/donate" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 w-fit px-6 py-3.5 rounded-2xl bg-[#ffc439] hover:bg-[#ffb703] text-[#1c1917] font-semibold text-base shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all">
+                            <i data-lucide="coffee" class="w-5 h-5"></i>
+                            Buy me a coffee on PayPal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-14 md:mt-10 pt-6 border-t border-[#f7f2e7]/20 flex flex-col items-center gap-2 text-center">
+                <p class="text-sm text-[#f7f2e7]/70">&copy; 2026 Easy Bode. All rights reserved.</p>
+                <div class="flex items-center gap-3 text-sm text-[#f7f2e7]/70">
+                    <a href="/privacy-policy" class="hover:text-white hover:underline transition-colors">Privacy Policy</a>
+                    <span class="opacity-50">·</span>
+                    <a href="/cookie-policy" class="hover:text-white hover:underline transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

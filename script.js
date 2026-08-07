@@ -85,6 +85,7 @@
             pdfBtn: 'Scarica PDF', previewLabel: 'Anteprima G(s):',
             syntaxError: '⚠️ Errore di sintassi nella formula!',
             olStabilityLabel: 'Stabilità Anello Aperto G(s)', olStable: 'STABILE', olUnstable: 'INSTABILE (poli s.p.d.)', olNonMinPhase: 'A FASE NON MINIMA (zero s.p.d.)',
+            navHome: 'Home', navTour: 'Tour', navDocs: 'Docs',
             catBasicPoles: 'Funzioni di Base (Poli Reali)', catZerosIntDiff: 'Zeri, Integratori e Differenziatori', cat2ndOrder: 'Sistemi del 2° Ordine e Risonanze', catCompensators: 'Reti Correttrici e Fase Non Minima', catControllers: 'Regolatori Standard', catFilters: 'Filtri Speciali', catPhysicalModels: 'Modelli Fisici Classici',
             exSimplePole: 'Polo reale semplice', exPoleTimeConst: 'Polo reale (costante di tempo)', exDoublePole: 'Polo reale doppio', exTwoPoles: 'Due poli reali distinti', ex3rdOrder: 'Sistema del 3° ordine (tre poli reali)', exWideSeparatedPoles: 'Poli a frequenze molto distanti',
             exIntegrator: 'Integratore (polo nell\'origine)', exDoubleIntegrator: 'Doppio integratore', exIdealDiff: 'Differenziatore ideale (zero nell\'origine)', exRealDiff: 'Differenziatore reale (filtro passa-alto)',
@@ -118,6 +119,7 @@
             pdfBtn: 'Download PDF', previewLabel: 'Preview G(s):',
             syntaxError: '⚠️ Syntax error in formula!',
             olStabilityLabel: 'Open-Loop Stability G(s)', olStable: 'STABLE', olUnstable: 'UNSTABLE (RHP pole)', olNonMinPhase: 'NON-MINIMUM PHASE (RHP zero)',
+            navHome: 'Home', navTour: 'Tour', navDocs: 'Docs',
             catBasicPoles: 'Basic Functions (Real Poles)', catZerosIntDiff: 'Zeros, Integrators & Differentiators', cat2ndOrder: '2nd Order Systems & Resonances', catCompensators: 'Compensator Networks & Non-Minimum Phase', catControllers: 'Standard Controllers', catFilters: 'Special Filters', catPhysicalModels: 'Classic Physical Models',
             exSimplePole: 'Simple real pole', exPoleTimeConst: 'Real pole (time constant)', exDoublePole: 'Double real pole', exTwoPoles: 'Two distinct real poles', ex3rdOrder: '3rd order system (three real poles)', exWideSeparatedPoles: 'Poles at widely separated frequencies',
             exIntegrator: 'Integrator (pole at the origin)', exDoubleIntegrator: 'Double integrator', exIdealDiff: 'Ideal differentiator (zero at the origin)', exRealDiff: 'Real differentiator (high-pass filter)',
@@ -151,6 +153,7 @@
             pdfBtn: 'Télécharger PDF', previewLabel: 'Aperçu G(s):',
             syntaxError: '⚠️ Erreur de syntaxe dans la formule!',
             olStabilityLabel: 'Stabilité en Boucle Ouverte G(s)', olStable: 'STABLE', olUnstable: 'INSTABLE (pôle instable)', olNonMinPhase: 'PHASE NON MINIMALE (zéro instable)',
+            navHome: 'Accueil', navTour: 'Visite', navDocs: 'Docs',
             catBasicPoles: 'Fonctions de Base (Pôles Réels)', catZerosIntDiff: 'Zéros, Intégrateurs et Différentiateurs', cat2ndOrder: 'Systèmes du 2e Ordre et Résonances', catCompensators: 'Réseaux Correcteurs et Phase Non Minimale', catControllers: 'Régulateurs Standards', catFilters: 'Filtres Spéciaux', catPhysicalModels: 'Modèles Physiques Classiques',
             exSimplePole: 'Pôle réel simple', exPoleTimeConst: 'Pôle réel (constante de temps)', exDoublePole: 'Pôle réel double', exTwoPoles: 'Deux pôles réels distincts', ex3rdOrder: 'Système du 3e ordre (trois pôles réels)', exWideSeparatedPoles: 'Pôles à fréquences très éloignées',
             exIntegrator: 'Intégrateur (pôle à l\'origine)', exDoubleIntegrator: 'Double intégrateur', exIdealDiff: 'Différentiateur idéal (zéro à l\'origine)', exRealDiff: 'Différentiateur réel (filtre passe-haut)',
@@ -184,6 +187,7 @@
             pdfBtn: 'PDF Herunterladen', previewLabel: 'Vorschau G(s):',
             syntaxError: '⚠️ Syntaxfehler in der Formel!',
             olStabilityLabel: 'Stabilität Offener Regelkreis G(s)', olStable: 'STABIL', olUnstable: 'INSTABIL (instabiler Pol)', olNonMinPhase: 'NICHTMINIMALPHASIG (instabile Nullstelle)',
+            navHome: 'Start', navTour: 'Tour', navDocs: 'Docs',
             catBasicPoles: 'Grundfunktionen (Reelle Pole)', catZerosIntDiff: 'Nullstellen, Integratoren & Differenzierer', cat2ndOrder: 'Systeme 2. Ordnung & Resonanzen', catCompensators: 'Kompensationsnetzwerke & Nichtminimalphasig', catControllers: 'Standardregler', catFilters: 'Spezialfilter', catPhysicalModels: 'Klassische Physikalische Modelle',
             exSimplePole: 'Einfacher reeller Pol', exPoleTimeConst: 'Reeller Pol (Zeitkonstante)', exDoublePole: 'Doppelter reeller Pol', exTwoPoles: 'Zwei unterschiedliche reelle Pole', ex3rdOrder: 'System 3. Ordnung (drei reelle Pole)', exWideSeparatedPoles: 'Pole bei weit auseinanderliegenden Frequenzen',
             exIntegrator: 'Integrator (Pol im Ursprung)', exDoubleIntegrator: 'Doppelintegrator', exIdealDiff: 'Idealer Differenzierer (Nullstelle im Ursprung)', exRealDiff: 'Realer Differenzierer (Hochpassfilter)',
@@ -217,6 +221,7 @@
             pdfBtn: 'Descargar PDF', previewLabel: 'Vista previa G(s):',
             syntaxError: '⚠️ Error de sintaxis en la fórmula!',
             olStabilityLabel: 'Estabilidad en Lazo Abierto G(s)', olStable: 'ESTABLE', olUnstable: 'INESTABLE (polo inestable)', olNonMinPhase: 'FASE NO MÍNIMA (cero inestable)',
+            navHome: 'Inicio', navTour: 'Recorrido', navDocs: 'Docs',
             catBasicPoles: 'Funciones Básicas (Polos Reales)', catZerosIntDiff: 'Ceros, Integradores y Diferenciadores', cat2ndOrder: 'Sistemas de 2° Orden y Resonancias', catCompensators: 'Redes Compensadoras y Fase No Mínima', catControllers: 'Controladores Estándar', catFilters: 'Filtros Especiales', catPhysicalModels: 'Modelos Físicos Clásicos',
             exSimplePole: 'Polo real simple', exPoleTimeConst: 'Polo real (constante de tiempo)', exDoublePole: 'Polo real doble', exTwoPoles: 'Dos polos reales distintos', ex3rdOrder: 'Sistema de 3er orden (tres polos reales)', exWideSeparatedPoles: 'Polos en frecuencias muy alejadas',
             exIntegrator: 'Integrador (polo en el origen)', exDoubleIntegrator: 'Doble integrador', exIdealDiff: 'Diferenciador ideal (cero en el origen)', exRealDiff: 'Diferenciador real (filtro paso alto)',
@@ -250,6 +255,7 @@
             pdfBtn: '下载 PDF', previewLabel: '预览 G(s):',
             syntaxError: '⚠️ 公式语法错误！',
             olStabilityLabel: '开环稳定性 G(s)', olStable: '稳定', olUnstable: '不稳定（右半平面极点）', olNonMinPhase: '非最小相位（右半平面零点）',
+            navHome: '首页', navTour: '导览', navDocs: '文档',
             catBasicPoles: '基础函数（实极点）', catZerosIntDiff: '零点、积分器与微分器', cat2ndOrder: '二阶系统与谐振', catCompensators: '校正网络与非最小相位', catControllers: '标准控制器', catFilters: '特殊滤波器', catPhysicalModels: '经典物理模型',
             exSimplePole: '简单实极点', exPoleTimeConst: '实极点（时间常数）', exDoublePole: '二重实极点', exTwoPoles: '两个不同的实极点', ex3rdOrder: '三阶系统（三个实极点）', exWideSeparatedPoles: '频率相距很远的极点',
             exIntegrator: '积分器（原点极点）', exDoubleIntegrator: '双重积分器', exIdealDiff: '理想微分器（原点零点）', exRealDiff: '实际微分器（高通滤波器）',
@@ -283,6 +289,7 @@
             pdfBtn: 'Baixar PDF', previewLabel: 'Pré-visualização G(s):',
             syntaxError: '⚠️ Erro de sintaxe na fórmula!',
             olStabilityLabel: 'Estabilidade em Malha Aberta G(s)', olStable: 'ESTÁVEL', olUnstable: 'INSTÁVEL (polo instável)', olNonMinPhase: 'FASE NÃO MÍNIMA (zero instável)',
+            navHome: 'Início', navTour: 'Tour', navDocs: 'Docs',
             catBasicPoles: 'Funções Básicas (Polos Reais)', catZerosIntDiff: 'Zeros, Integradores e Diferenciadores', cat2ndOrder: 'Sistemas de 2ª Ordem e Ressonâncias', catCompensators: 'Redes Compensadoras e Fase Não Mínima', catControllers: 'Controladores Padrão', catFilters: 'Filtros Especiais', catPhysicalModels: 'Modelos Físicos Clássicos',
             exSimplePole: 'Polo real simples', exPoleTimeConst: 'Polo real (constante de tempo)', exDoublePole: 'Polo real duplo', exTwoPoles: 'Dois polos reais distintos', ex3rdOrder: 'Sistema de 3ª ordem (três polos reais)', exWideSeparatedPoles: 'Polos em frequências muito distantes',
             exIntegrator: 'Integrador (polo na origem)', exDoubleIntegrator: 'Duplo integrador', exIdealDiff: 'Diferenciador ideal (zero na origem)', exRealDiff: 'Diferenciador real (filtro passa-alta)',
@@ -316,6 +323,7 @@
             pdfBtn: 'PDF ダウンロード', previewLabel: 'プレビュー G(s):',
             syntaxError: '⚠️ 数式の構文エラーです！',
             olStabilityLabel: '開ループ安定性 G(s)', olStable: '安定', olUnstable: '不安定（右半平面極）', olNonMinPhase: '非最小位相（右半平面零点）',
+            navHome: 'ホーム', navTour: 'ツアー', navDocs: 'ドキュメント',
             catBasicPoles: '基本関数（実極）', catZerosIntDiff: '零点・積分器・微分器', cat2ndOrder: '2次系と共振', catCompensators: '補償回路と非最小位相', catControllers: '標準コントローラ', catFilters: '特殊フィルタ', catPhysicalModels: '古典的な物理モデル',
             exSimplePole: '単純な実極', exPoleTimeConst: '実極（時定数）', exDoublePole: '二重実極', exTwoPoles: '2つの異なる実極', ex3rdOrder: '3次系（3つの実極）', exWideSeparatedPoles: '大きく離れた周波数の極',
             exIntegrator: '積分器（原点の極）', exDoubleIntegrator: '二重積分器', exIdealDiff: '理想微分器（原点の零点）', exRealDiff: '実微分器（ハイパスフィルタ）',
@@ -349,6 +357,7 @@
             pdfBtn: 'تحميل PDF', previewLabel: 'معاينة G(s):',
             syntaxError: '⚠️ خطأ في صياغة المعادلة!',
             olStabilityLabel: 'استقرار الحلقة المفتوحة G(s)', olStable: 'مستقر', olUnstable: 'غير مستقر (قطب غير مستقر)', olNonMinPhase: 'طور غير أدنى (صفر غير مستقر)',
+            navHome: 'الرئيسية', navTour: 'جولة', navDocs: 'الوثائق',
             catBasicPoles: 'دوال أساسية (أقطاب حقيقية)', catZerosIntDiff: 'أصفار ومكاملات ومفاضلات', cat2ndOrder: 'أنظمة من الدرجة الثانية والرنين', catCompensators: 'شبكات التعويض والطور غير الأدنى', catControllers: 'وحدات تحكم قياسية', catFilters: 'مرشحات خاصة', catPhysicalModels: 'نماذج فيزيائية كلاسيكية',
             exSimplePole: 'قطب حقيقي بسيط', exPoleTimeConst: 'قطب حقيقي (ثابت زمني)', exDoublePole: 'قطب حقيقي مزدوج', exTwoPoles: 'قطبان حقيقيان متمايزان', ex3rdOrder: 'نظام من الدرجة الثالثة (ثلاثة أقطاب حقيقية)', exWideSeparatedPoles: 'أقطاب عند ترددات متباعدة جدًا',
             exIntegrator: 'مكامل (قطب عند الأصل)', exDoubleIntegrator: 'مكامل مزدوج', exIdealDiff: 'مفاضل مثالي (صفر عند الأصل)', exRealDiff: 'مفاضل حقيقي (مرشح تمرير عالٍ)',
@@ -382,6 +391,7 @@
             pdfBtn: 'PDF डाउनलोड', previewLabel: 'पूर्वावलोकन G(s):',
             syntaxError: '⚠️ सूत्र में वाक्यविन्यास त्रुटि!',
             olStabilityLabel: 'ओपन-लूप स्थिरता G(s)', olStable: 'स्थिर', olUnstable: 'अस्थिर (अस्थिर ध्रुव)', olNonMinPhase: 'गैर-न्यूनतम फेज़ (अस्थिर शून्य)',
+            navHome: 'होम', navTour: 'टूर', navDocs: 'डॉक्स',
             catBasicPoles: 'मूल फ़ंक्शन (वास्तविक ध्रुव)', catZerosIntDiff: 'शून्य, इंटीग्रेटर और डिफरेंशिएटर', cat2ndOrder: 'द्वितीय क्रम प्रणाली और अनुनाद', catCompensators: 'क्षतिपूर्ति नेटवर्क और गैर-न्यूनतम फेज़', catControllers: 'मानक नियंत्रक', catFilters: 'विशेष फ़िल्टर', catPhysicalModels: 'शास्त्रीय भौतिक मॉडल',
             exSimplePole: 'सरल वास्तविक ध्रुव', exPoleTimeConst: 'वास्तविक ध्रुव (समय स्थिरांक)', exDoublePole: 'द्विक वास्तविक ध्रुव', exTwoPoles: 'दो भिन्न वास्तविक ध्रुव', ex3rdOrder: 'तृतीय क्रम प्रणाली (तीन वास्तविक ध्रुव)', exWideSeparatedPoles: 'व्यापक रूप से अलग आवृत्तियों पर ध्रुव',
             exIntegrator: 'इंटीग्रेटर (मूल बिंदु पर ध्रुव)', exDoubleIntegrator: 'द्विक इंटीग्रेटर', exIdealDiff: 'आदर्श डिफरेंशिएटर (मूल बिंदु पर शून्य)', exRealDiff: 'वास्तविक डिफरेंशिएटर (हाई-पास फ़िल्टर)',
@@ -447,6 +457,13 @@
         // Re-applies every static UI label/button/title for the currently selected language.
         function applyTranslations() 
         {
+            // Chrome-only pages (Tour, Docs) don't have the calculator UI at
+            // all — bail out early instead of throwing on the first missing
+            // element. The shared navbar (language, dark mode, nav links) is
+            // handled separately by applyNavTranslations(), which is safe
+            // to call on every page.
+            if (!document.getElementById('tfInput')) return;
+
             const L = LANG[currentLang] || LANG['it'];
             document.getElementById('ui-title').innerHTML = L.title;
             document.getElementById('ui-calc-btn').textContent = L.calcBtn;
@@ -472,7 +489,7 @@
             document.getElementById('lbl-cl-stability').textContent = L.clStab;
             const olLbl = document.getElementById('lbl-ol-stability');
             if (olLbl) olLbl.textContent = L.olStabilityLabel;
-                const exModalTitle = document.getElementById('lbl-examples-modal-title');
+            const exModalTitle = document.getElementById('lbl-examples-modal-title');
             if (exModalTitle) exModalTitle.textContent = L.examplesBtn;
             document.getElementById('lbl-w2-title').textContent = L.w2;
             document.getElementById('lbl-static-gain').textContent = L.staticGain;
@@ -541,7 +558,43 @@
         ).join('');
         document.getElementById('currentLangFlag').innerHTML = FLAGS.it;
 
-        window.addEventListener('DOMContentLoaded', () => { updateLatexPreview(); applyTranslations(); restoreCurrentStudy(); });
+        // Restore saved theme + language (if any), applied immediately at
+        // script load time (this tag sits at the end of <body>, so the DOM
+        // is already fully parsed) — before the shared navbar/translation
+        // code below even runs, so Home/Tour/Docs always agree on theme
+        // and language instead of resetting on every page navigation.
+        const DARK_MODE_KEY = 'easybode_dark_mode';
+        const LANG_KEY = 'easybode_lang';
+        try {
+            if (localStorage.getItem(DARK_MODE_KEY) === '1') {
+                isDarkMode = true;
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
+            }
+        } catch(e) {}
+        try {
+            const savedLang = localStorage.getItem(LANG_KEY);
+            if (savedLang && LANG_NAMES[savedLang]) {
+                currentLang = savedLang;
+                document.getElementById('currentLangFlag').innerHTML = FLAGS[savedLang];
+            }
+        } catch(e) {}
+        lucide.createIcons();
+
+        // Translates the shared top navbar (page links). Safe to call on
+        // every page — Home, Tour, Docs — since it only touches nav
+        // elements that live in the shared header markup, never
+        // calculator-specific ones.
+        function applyNavTranslations() {
+            const L = LANG[currentLang] || LANG['it'];
+            const map = { 'nav-link-home': L.navHome, 'nav-link-tour': L.navTour, 'nav-link-docs': L.navDocs };
+            Object.keys(map).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = map[id];
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { applyNavTranslations(); updateLatexPreview(); applyTranslations(); restoreCurrentStudy(); });
 
         // Renders a live LaTeX preview of the transfer function as the user types it.
         // Timer that hides the LaTeX "nuvoletta" 3s after the last
@@ -551,7 +604,9 @@
         const LATEX_BUBBLE_HIDE_DELAY = 3000;
 
         function updateLatexPreview() {
-            const inputStr = document.getElementById('tfInput').value;
+            const inputEl = document.getElementById('tfInput');
+            if (!inputEl) return; // chrome-only pages (Tour, Docs) have no calculator input
+            const inputStr = inputEl.value;
             const previewDiv = document.getElementById('latexPreview');
             const bubble = document.getElementById('latexBubble');
 
@@ -604,7 +659,9 @@
         function selectLanguage(lang) {
             document.getElementById('langMenu').classList.add('hidden');
             currentLang = lang;
+            try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
             document.getElementById('currentLangFlag').innerHTML = FLAGS[lang] || FLAGS['it'];
+            applyNavTranslations();
             applyTranslations();
             if (isInterfaceExpanded) generateBode();
         }
@@ -614,12 +671,27 @@
         // Switches between light and dark theme and swaps the moon/sun icon.
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
+            try { localStorage.setItem(DARK_MODE_KEY, isDarkMode ? '1' : '0'); } catch(e) {}
             document.documentElement.classList.toggle('dark');
             document.getElementById('theme-icon').setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
             lucide.createIcons();
             if (isInterfaceExpanded) generateBode();
         }
-
+function toggleMobileMenu() {
+            const backdrop = document.getElementById('mobile-menu-backdrop');
+            const drawer = document.getElementById('mobile-menu-drawer');
+            if (!backdrop || !drawer) return;
+            backdrop.classList.remove('hidden');
+            requestAnimationFrame(() => { backdrop.classList.add('open'); drawer.classList.add('open'); });
+        }
+        function closeMobileMenu() {
+            const backdrop = document.getElementById('mobile-menu-backdrop');
+            const drawer = document.getElementById('mobile-menu-drawer');
+            if (!backdrop || !drawer) return;
+            backdrop.classList.remove('open');
+            drawer.classList.remove('open');
+            setTimeout(() => backdrop.classList.add('hidden'), 250);
+        }
         // Switches the frequency axis between Hz and rad/s and redraws the charts.
         function toggleUnits() {
             currentUnit = currentUnit === 'Hz' ? 'rads' : 'Hz';

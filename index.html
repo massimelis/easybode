@@ -3,26 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Applies the saved theme synchronously, before first paint, so
+         navigating between Home/Tour/Docs never flashes the wrong theme.
+         Uses the same 'easybode_dark_mode' key toggleDarkMode() writes to. -->
+    <script>
+        if (localStorage.getItem('easybode_dark_mode') === '1') {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     <title>Bode Analysis Studio Pro - Advanced Analytics</title>
 
     <!-- ═══════════════════════ SEO & condivisione social ═══════════════════════ -->
     <meta name="description" content="Analizza funzioni di trasferimento online: diagrammi di Bode, Nyquist e Nichols, poli e zeri, margini di stabilità e risposta al gradino. Gratuito e immediato.">
-    <link rel="canonical" href="https://massimelis.github.io/easybode">
+    <link rel="canonical" href="https://massimelis.github.io/easybode/">
 
     <!-- Open Graph (anteprima su WhatsApp, Facebook, LinkedIn, Telegram...) -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Easy Bode">
     <meta property="og:locale" content="it_IT">
-    <meta property="og:url" content="https://massimelis.github.io/easybode">
+    <meta property="og:url" content="https://massimelis.github.io/easybode/">
     <meta property="og:title" content="Easy Bode — Analisi di Sistemi di Controllo Online">
     <meta property="og:description" content="Diagrammi di Bode, Nyquist e Nichols, poli e zeri, margini di stabilità e risposta al gradino, direttamente dal browser.">
-    <meta property="og:image" content="https://massimelis.github.io/easybode/bg/og-image.png">
+    <meta property="og:image" content="https://massimelis.github.io/easybode//bg/og-image.png">
 
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Easy Bode — Analisi di Sistemi di Controllo Online">
     <meta name="twitter:description" content="Diagrammi di Bode, Nyquist e Nichols, poli e zeri, margini di stabilità e risposta al gradino, direttamente dal browser.">
-    <meta name="twitter:image" content="https://massimelis.github.io/easybode">
+    <meta name="twitter:image" content="https://massimelis.github.io/easybode//bg/og-image.png">
 
     <!-- Colore della barra del browser su mobile, coerente col tema chiaro/scuro del sito -->
     <meta name="theme-color" content="#8a522e" media="(prefers-color-scheme: light)">
@@ -65,25 +74,61 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen flex flex-col p-4 md:p-10 antialiased relative">
+<!-- ═══════════════ Shared top navbar — fixed, glass, identical on every page ═══════════════ -->
+    <nav class="site-nav">
+        <a href="index.html" class="site-nav-logo" aria-label="Easy Bode — Home">
+            <img src="bg/logo.png" alt="Easy Bode" class="h-12 sm:h-18 w-auto object-contain rounded-lg">
+        </a>
 
-    <div class="absolute top-6 right-6 z-50 flex items-center gap-3">
-        <div class="relative inline-block text-left" id="langDropdownContainer">
-            <button onclick="toggleLangMenu()" id="lang-btn" class="flex items-center gap-2 p-2.5 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-xl shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext text-sm font-medium">
-                <span id="currentLangFlag" class="flex items-center"></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 opacity-70"></i>
-            </button>
-            <div id="langMenu" class="hidden action-menu simple-menu-scroll absolute right-0 mt-2 w-44 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder shadow-xl z-50 py-1 max-h-64 overflow-y-auto"></div>
+        <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="site-nav-hamburger" aria-label="Apri menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <div class="site-nav-links">
+            <a href="index.html" id="nav-link-home" class="nav-link">Home</a>
+            <a href="docs.html" id="nav-link-docs" class="nav-link">Docs</a>
         </div>
 
-        <button onclick="toggleDarkMode()" id="theme-btn" class="p-2.5 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-xl shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext">
-            <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
-        </button>
-    </div>
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div class="relative inline-block text-left" id="langDropdownContainer">
+                <button onclick="toggleLangMenu()" id="lang-btn" class="flex items-center gap-2 p-2 sm:p-2.5   rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-900 dark:text-darktext text-sm font-medium">
+                    <span id="currentLangFlag" class="flex items-center"></span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 opacity-70"></i>
+                </button>
+                <div id="langMenu" class="hidden action-menu simple-menu-scroll absolute right-0 mt-2 w-44 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder shadow-xl z-50 py-1 max-h-64 overflow-y-auto"></div>
+            </div>
 
-<div id="main-layout-wrapper" class="w-full flex-grow flex flex-col justify-start transition-all duration-500 ease-in-out">
-        
-    <header id="app-header" class="hero-overlay w-full max-w-4xl mx-auto transition-all duration-500 px-4">
-    <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-10 mt-40 text-center" id="ui-title">
+            <button onclick="toggleDarkMode()" id="theme-btn" class="p-2 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext">
+                <i data-lucide="moon" id="theme-icon" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile drawer: si apre da sinistra, in cascata logo → Home → Docs → Tour -->
+    <div id="mobile-menu-backdrop" class="mobile-menu-backdrop hidden" onclick="closeMobileMenu()"></div>
+    <aside id="mobile-menu-drawer" class="mobile-menu-drawer">
+        <div class="mobile-menu-drawer-header">
+            <img src="bg/logo.png" alt="Easy Bode" class="h-12 w-auto object-contain rounded-lg">
+            <button onclick="closeMobileMenu()" class="mobile-menu-close" aria-label="Chiudi menu">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <nav class="mobile-menu-links">
+            <a href="index.html" id="nav-link-home" class="nav-link active" id="mobile-nav-link-home" class="mobile-menu-link">Home</a>
+            <a href="docs.html" id="nav-link-docs" class="nav-link active" id="mobile-nav-link-docs" class="mobile-menu-link">Docs</a>
+            
+        </nav>
+    </aside>
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════════ -->
+
+    <div id="main-layout-wrapper" class="w-full flex-grow flex flex-col justify-start transition-all duration-500 ease-in-out">
+    <div id="main-layout-wrapper" class="w-full flex-grow flex flex-col justify-start transition-all duration-500 ease-in-out">
+
+    <header id="app-header" class="hero-overlay w-full transition-all duration-500">
+      
+
+        <div class="hero-center-content max-w-4xl mx-auto w-full mb-10">
+    <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-10 mt-16 sm:mt-24 text-center" id="ui-title">
         Welcome to <span class="font-bold">Easy Bode</span>
     </h1>
     
@@ -146,9 +191,11 @@
         <div id="history-chips" class="mt-4 mb-14 flex flex-wrap items-center justify-center gap-2"></div>
 
     </div>
+        </div>
+    </div>
 </header>
 
-       <div id="dynamic-results-section" class="hidden w-full max-w-6xl mx-auto mt-10 sm:mt-6 space-y-8 fade-in-content">
+       <div id="dynamic-results-section" class="hidden w-full max-w-6xl mx-auto mt-20 sm:mt-6 space-y-8 fade-in-content">
              <div class="flex flex-nowrap justify-end items-center gap-2 sm:gap-3">
                 <button onclick="toggleUnits()" class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder rounded-3xl shadow-sm text-sm font-semibold cursor-pointer text-stone-800 dark:text-darktext hover:scale-105 active:scale-95 transition-all whitespace-nowrap">
                     <i data-lucide="settings" class="w-4 h-4 shrink-0"></i>
@@ -507,7 +554,7 @@
                 <div class="flex flex-col items-start text-left">
                     <div class="flex items-center gap-4">
                         <!-- Sostituisci "logo.png" con il percorso della tua immagine -->
-                        <img src="bg/logo.png" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
+                        <img src="bg/logo.jpg" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
                         
                     </div>
                     <p class="mt-6 md:mt-4 text-base md:text-m text-[#f7f2e7]/80 max-w-sm">
@@ -543,7 +590,8 @@
             <div class="mt-14 md:mt-10 pt-6 border-t border-[#f7f2e7]/20 flex flex-col items-center gap-2 text-center">
                 <p class="text-sm text-[#f7f2e7]/70">&copy; 2026 Easy Bode. All rights reserved.</p>
                 <div class="flex items-center gap-3 text-sm text-[#f7f2e7]/70">
-                    <a href="privacy-policy.html" class="hover:text-white hover:underline transition-colors">Privacy and Cookies</a>
+                    <a href="/privacy-policy" class="hover:text-white hover:underline transition-colors">Privacy & Cookies</a>
+                    
                 </div>
             </div>
 
