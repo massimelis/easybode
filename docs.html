@@ -146,11 +146,11 @@
                     <p>The transfer function is the Laplace transform of the impulse response. It defines the algebraic relationship between the input and the output in the frequency domain, describing the overall dynamic behavior of the system. Formally, given an input $U(s)$ and an output $Y(s)$ under zero initial conditions, the transfer function $G(s)$ is expressed as:$$G(s) = \frac{Y(s)}{U(s)} = \mathcal{L}\{g(t)\}$$where $g(t)$ represents the system's impulse response, and $s = \sigma + j\omega$ is the Laplace variable.</p>
                 </div>
                 
-    <hr class="my-2 border-stone-200 dark:border-darkborder mb-3">
+    <hr class="my-2 border-stone-200 dark:border-darkborder">
                 
 <div>
-    <h3 class="text-base font-semibold mb-3 mt-4">1. Elements of a Transfer Function</h3>
-    <p class="text-sm leading-relaxed opacity-90 mb-3">To facilitate analysis and plotting, the transfer function is factored and broken down into its fundamental building blocks: a gain constant \(K\), poles, and zeros. This factorization allows the complex overall response to be analyzed as the sum of simpler individual contributions.</p>
+    <h3 class="text-base font-semibold mb-2">1. Elements of a Transfer Function</h3>
+    <p class="text-sm leading-relaxed opacity-90 mb-2">To facilitate analysis and plotting, the transfer function is factored and broken down into its fundamental building blocks: a gain constant \(K\), poles, and zeros. This factorization allows the complex overall response to be analyzed as the sum of simpler individual contributions.</p>
     <ul class="list-disc pl-5 space-y-3 text-sm leading-relaxed opacity-90">
         <li><strong>Gain constant (\(K\)):</strong> represents the overall gain of the system.</li>
         <li><strong>Zeros:</strong> values of the Laplace variable \(s\) that make the numerator of the transfer function zero (\(G(s) = 0\)). Physically, they tend to attenuate or block specific frequencies.</li>
@@ -189,10 +189,10 @@
     <div>
         <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">1. Gain Constant (\(K\))</h3>
         <p class="mb-2">It represents the global multiplicative factor of the system (or the zero-frequency gain if there are no poles/zeros at the origin).</p>
-        <ul class="list-disc pl-5 space-y-1 mt-3">
+        <ul class="list-disc pl-5 space-y-2">
             <li><strong>Magnitude:</strong> \(20 \log_{10}(|K|)\) \(\text{dB}\). It is a horizontal straight line independent of frequency.</li>
             <li><strong>Phase:</strong>
-                <ul class="list-[circle] pl-5 mt-1 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li>\(0^\circ\) if \(K > 0\).</li>
                     <li>\(-180^\circ\) (or \(+180^\circ\)) if \(K < 0\).</li>
                 </ul>
@@ -205,15 +205,15 @@
     <div>
         <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">2. Poles and Zeros at the Origin (\(s^{\pm h}\))</h3>
         <p class="mb-2">Factors of the type \(s\) (zero) or \(\frac{1}{s}\) (pole) raised to a certain multiplicity \(h\).</p>
-        <ul class="list-disc pl-5 space-y-2 mt-3">
+        <ul class="list-disc pl-5 space-y-2">
             <li><strong>Pole at the origin (\(\frac{1}{s}\)):</strong>
-                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li><strong>Magnitude:</strong> straight line with a slope of \(-20\ \text{dB/decade}\) passing through \(0\ \text{dB}\) at the frequency \(\omega = 1\ \text{rad/s}\).</li>
                     <li><strong>Phase:</strong> constant at \(-90^\circ\) for all frequencies.</li>
                 </ul>
             </li>
             <li><strong>Zero at the origin (\(s\)):</strong>
-                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li><strong>Magnitude:</strong> straight line with a slope of \(+20\ \text{dB/decade}\) passing through \(0\ \text{dB}\) at the frequency \(\omega = 1\ \text{rad/s}\).</li>
                     <li><strong>Phase:</strong> constant at \(+90^\circ\) for all frequencies.</li>
                 </ul>
@@ -227,15 +227,15 @@
     <div>
         <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">3. Real Poles and Zeros (Normal / First-Order)</h3>
         <p class="mb-2">Factors of the type \((1 + \tau s)\) for zeros and \(\frac{1}{1 + \tau s}\) for poles, where \(\omega_c = \frac{1}{\tau}\) is the cutoff frequency (or transition frequency).</p>
-        <ul class="list-disc pl-5 space-y-2 mt-3">
+        <ul class="list-disc pl-5 space-y-2">
             <li><strong>Real pole:</strong>
-                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_c\); straight line with a slope of \(-20\ \text{dB/decade}\) for \(\omega > \omega_c\).</li>
                     <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_c\); \(-90^\circ\) for \(\omega \gg \omega_c\); at \(\omega = \omega_c\) the phase is exactly \(-45^\circ\).</li>
                 </ul>
             </li>
             <li><strong>Real zero:</strong>
-                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_c\); straight line with a slope of \(+20\ \text{dB/decade}\) for \(\omega > \omega_c\).</li>
                     <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_c\); \(+90^\circ\) for \(\omega \gg \omega_c\); at \(\omega = \omega_c\) the phase is exactly \(+45^\circ\).</li>
                 </ul>
@@ -248,15 +248,15 @@
     <div>
         <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">4. Complex Conjugate Poles and Zeros (Second-Order)</h3>
         <p class="mb-2">Factors of the type \(1 + \frac{2\zeta}{\omega_n}s + \frac{s^2}{\omega_n^2}\) (zeros) or their inverse (poles), characterized by a natural frequency \(\omega_n\) and a damping ratio \(\zeta\) (with \(0 < \zeta < 1\)).</p>
-        <ul class="list-disc pl-5 space-y-2 mt-3">
+        <ul class="list-disc pl-5 space-y-2">
             <li><strong>Complex conjugate pole:</strong>
-                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_n\); straight line with a slope of \(-40\ \text{dB/decade}\) for \(\omega > \omega_n\). Near \(\omega_n\), it exhibits a resonance peak that is more pronounced the smaller \(\zeta\) is.</li>
                     <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_n\); \(-180^\circ\) for \(\omega \gg \omega_n\); at \(\omega = \omega_n\) the phase is exactly \(-90^\circ\) (independent of \(\zeta\)).</li>
                 </ul>
             </li>
             <li><strong>Complex conjugate zero:</strong>
-                <ul class="list-[circle] pl-5 mt-3 space-y-1">
+                <ul class="list-[circle] pl-5 mt-2 space-y-1">
                     <li><strong>Magnitude (asymptotic):</strong> \(0\ \text{dB}\) for \(\omega < \omega_n\); straight line with a slope of \(+40\ \text{dB/decade}\) for \(\omega > \omega_n\). It exhibits a dip (valley) at \(\omega_n\) if \(\zeta\) is small.</li>
                     <li><strong>Phase:</strong> \(0^\circ\) for \(\omega \ll \omega_n\); \(+180^\circ\) for \(\omega \gg \omega_n\); at \(\omega = \omega_n\) the phase is exactly \(+90^\circ\).</li>
                 </ul>
@@ -269,9 +269,9 @@
     <div>
         <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2"> 5. Real Plot</h3>
         <p class="mb-2"> Before the advent of numerical computing, engineers could not afford to calculate the frequency response point by point: a rapid method was needed to hand-draw a sufficiently accurate diagram. Asymptotic approximation was created for precisely this reason — it replaces the true curve, which is generally a continuous curve, with a broken line made of straight segments, which is simpler to draw and to read.</p>
-        <ul class="list-disc pl-5 space-y-2 mt-3">
+        <ul class="list-disc pl-5 space-y-2">
             <li><strong>Techniques:</strong></li>
-              <ul class="list-[circle] pl-5 mt-3 space-y-1">
+              <ul class="list-[circle] pl-5 mt-2 space-y-1">
                 <li><strong>sum of contributions:</strong> The Bode plot of the entire transfer function can be constructed by adding up, point by point, the contribution of each individual pole and zero.</li>
               <li><strong>Approximation:</strong>For a real pole or zero, the maximum deviation between the real curve and the asymptotic broken line occurs exactly at the cut-off frequency $\omega_c$, where it is about $3\ \text{dB}$ in magnitude (and the phase there is exact anyway: $\pm45^\circ$).
             For complex conjugate poles or zeros, the situation changes: the deviation from the asymptote near $\omega_n$ depends heavily on the damping factor $\zeta$. With a small $\zeta$, a resonance peak (or dip) appears that straight lines cannot show.</li>
@@ -390,7 +390,7 @@
         </div>
 
             <!-- 6. Temporal (Step) Response -->
-            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm mb-6">
                 <div class="flex items-center gap-3 mb-4">
                     <span class="docs-chapter-icon"><i data-lucide="waypoints" class="w-5 h-5"></i></span>
                     <div>
@@ -427,7 +427,7 @@
 
             
           <!-- 7. Nyquist Diagram -->
-            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm">
+            <div class="card border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-sm mb-6">
                 <div class="flex items-center gap-3 mb-4">
                     <span class="docs-chapter-icon"><i data-lucide="radar" class="w-5 h-5"></i></span>
                     <div>
@@ -436,44 +436,44 @@
                     </div>
                 </div>
 
-                <p class="text-sm leading-relaxed opacity-90">The <strong>Nyquist diagram</strong> is a fundamental graphical tool in automatic control theory. Unlike Bode diagrams, which use two separate plots for magnitude and phase, the Nyquist diagram traces the frequency response of a transfer function \(G(j\omega)\) directly in the complex plane, as the angular frequency \(\omega\) varies over the interval \((-\infty, +\infty)\).</p>
+                <p class="text-sm leading-relaxed opacity-90 mb-4">The <strong>Nyquist diagram</strong> is a fundamental graphical tool in automatic control theory. Unlike Bode diagrams, which use two separate plots for magnitude and phase, the Nyquist diagram traces the frequency response of a transfer function \(G(j\omega)\) directly in the complex plane, as the angular frequency \(\omega\) varies over the interval \((-\infty, +\infty)\).</p>
 
-                <hr class="my-4 border-stone-200 dark:border-darkborder">
+                <hr class="my-2 border-stone-200 dark:border-darkborder">
 
-                <div class="mb-3">
-                    <h3 class="text-base font-semibold mb-3">1. Geometric Properties and Symmetry</h3>
-                    <p class="text-sm leading-relaxed opacity-90 mb-3">In the complex plane, the horizontal axis represents the real part, while the vertical axis represents the imaginary part.</p>
-                    <ul class="list-disc pl-5 space-y-3 text-sm leading-relaxed opacity-90">
+                <div>
+                    <h3 class="text-base font-semibold mb-2">1. Geometric Properties and Symmetry</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-2">In the complex plane, the horizontal axis represents the real part, while the vertical axis represents the imaginary part.</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm leading-relaxed opacity-90">
                         <li>For real physical systems, the plot for negative frequencies (\(\omega < 0\)) is the mirror image, about the real axis, of the plot traced for positive frequencies (\(\omega > 0\)).</li>
                         <li>It is therefore sufficient to trace the curve for \(\omega \in [0, +\infty)\) and complete it by symmetry.</li>
                     </ul>
                 </div>
 
-                <hr class="my-4 border-stone-200 dark:border-darkborder">
+                <hr class="my-2 border-stone-200 dark:border-darkborder">
 
-                <div class="mb-3">
-                    <h3 class="text-base font-semibold mb-3">2. The Nyquist Stability Criterion</h3>
-                    <p class="text-sm leading-relaxed opacity-90 mb-3">The most important aspect of the diagram lies in the <strong>Nyquist Criterion</strong>: this theorem makes it possible to determine the absolute stability of the closed-loop feedback system by analyzing only the behavior of the open-loop transfer function \(G(j\omega)H(j\omega)\) in the complex plane.</p>
+                <div>
+                    <h3 class="text-base font-semibold mb-2">2. The Nyquist Stability Criterion</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-2">The most important aspect of the diagram lies in the <strong>Nyquist Criterion</strong>: this theorem makes it possible to determine the absolute stability of the closed-loop feedback system by analyzing only the behavior of the open-loop transfer function \(G(j\omega)H(j\omega)\) in the complex plane.</p>
                     
                 </div>
 
-                <hr class="my-4 border-stone-200 dark:border-darkborder">
+                <hr class="my-2 border-stone-200 dark:border-darkborder">
 
-                <div class="mb-3">
-                    <h3 class="text-base font-semibold mb-3">3. The Critical Point (\(-1, j0\))</h3>
-                    <p class="text-sm leading-relaxed opacity-90 mb-3">In the Nyquist diagram, the critical point at coordinates \((-1, j0)\) is of vital importance.</p>
-                    <ul class="list-disc pl-5 space-y-3 text-sm leading-relaxed opacity-90">
+                <div>
+                    <h3 class="text-base font-semibold mb-2">3. The Critical Point (\(-1, j0\))</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-2">In the Nyquist diagram, the critical point at coordinates \((-1, j0)\) is of vital importance.</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm leading-relaxed opacity-90">
                         <li>The position of the diagram relative to this point makes it possible to assess not only the stability of the closed-loop system, but also the stability margins (gain margin and phase margin).</li>
                         <li>If the open-loop diagram encircles the critical point \((-1, j0)\), the closed-loop feedback system will generally be unstable.</li>
                     </ul>
                 </div>
 
-                <hr class="my-4 border-stone-200 dark:border-darkborder">
+                <hr class="my-2 border-stone-200 dark:border-darkborder">
 
                 <div>
-                    <h3 class="text-base font-semibold mb-3">4. Open-Loop Poles and the \(Z = P + N\) Relationship</h3>
-                    <p class="text-sm leading-relaxed opacity-90 mb-3">To correctly apply the Nyquist Criterion, it is essential to know in advance the number of unstable poles (with positive real part) of the open-loop transfer function, usually denoted by the letter \(P\).</p>
-                    <p class="text-sm leading-relaxed opacity-90 mb-3">The fundamental formula of the criterion relates the number of encirclements \(N\) made by the diagram around the critical point \((-1, j0)\), the number of unstable open-loop poles \(P\), and the number of unstable closed-loop poles \(Z\):</p>
+                    <h3 class="text-base font-semibold mb-2">4. Open-Loop Poles and the \(Z = P + N\) Relationship</h3>
+                    <p class="text-sm leading-relaxed opacity-90 mb-2">To correctly apply the Nyquist Criterion, it is essential to know in advance the number of unstable poles (with positive real part) of the open-loop transfer function, usually denoted by the letter \(P\).</p>
+                    <p class="text-sm leading-relaxed opacity-90 mb-2">The fundamental formula of the criterion relates the number of encirclements \(N\) made by the diagram around the critical point \((-1, j0)\), the number of unstable open-loop poles \(P\), and the number of unstable closed-loop poles \(Z\):</p>
                     <p class="text-center text-base font-semibold py-2">\[ Z = P + N \]</p>
                 </div>
                 
@@ -506,7 +506,7 @@
 
                     <div>
                     <h3 class="text-base font-bold text-stone-800 dark:text-darktext mb-2">Key Features</h3>
-                    <ul class="list-disc pl-5 space-y-1">
+                    <ul class="list-disc pl-5 space-y-2">
                         <li><strong>Critical Point:</strong> The point $(-180^\circ, 0\ \text{dB})$ represents the threshold of closed-loop instability.</li>
                         <li><strong>Stability Geometry:</strong> Phase Margin and Gain Margin are measured directly as horizontal and vertical distances from the curve to the critical point $(-180^\circ, 0\ \text{dB})$.</li>
                     </ul>
