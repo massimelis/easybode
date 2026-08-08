@@ -73,7 +73,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen flex flex-col p-4 md:p-10 antialiased relative">
+<body class="min-h-screen flex flex-col p-4 md:p-5 antialiased relative">
 <!-- ═══════════════ Shared top navbar — fixed, glass, identical on every page ═══════════════ -->
     <nav class="site-nav">
         <a href="index.html" class="site-nav-logo" aria-label="Easy Bode — Home">
@@ -87,6 +87,7 @@
         <div class="site-nav-links">
             <a href="index.html" id="nav-link-home" class="nav-link">Home</a>
             <a href="docs.html" id="nav-link-docs" class="nav-link">Docs</a>
+            <a href="tour.html" id="nav-link-tour" class="nav-link">Tour</a>
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -104,19 +105,19 @@
         </div>
     </nav>
 
-    <!-- Mobile drawer: si apre da sinistra, in cascata logo → Home → Docs → Tour -->
+    <!-- Mobile dropdown menu: si apre in cascata sotto la navbar, centrato
+         sullo schermo, altezza massima 50vh, link centrati -->
     <div id="mobile-menu-backdrop" class="mobile-menu-backdrop hidden" onclick="closeMobileMenu()"></div>
     <aside id="mobile-menu-drawer" class="mobile-menu-drawer">
         <div class="mobile-menu-drawer-header">
-            <img src="bg/logo.png" alt="Easy Bode" class="h-12 w-auto object-contain rounded-lg">
             <button onclick="closeMobileMenu()" class="mobile-menu-close" aria-label="Chiudi menu">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <nav class="mobile-menu-links">
-            <a href="index.html" id="nav-link-home" class="nav-link active" id="mobile-nav-link-home" class="mobile-menu-link">Home</a>
-            <a href="docs.html" id="nav-link-docs" class="nav-link active" id="mobile-nav-link-docs" class="mobile-menu-link">Docs</a>
-            
+            <a href="index.html" id="mobile-nav-link-home" class="mobile-menu-link">Home</a>
+            <a href="docs.html" id="mobile-nav-link-docs" class="mobile-menu-link">Docs</a>
+            <a href="tour.html" id="mobile-nav-link-tour" class="mobile-menu-link">Tour</a>
         </nav>
     </aside>
     <!-- ═══════════════════════════════════════════════════════════════════════════════════════ -->
@@ -554,7 +555,7 @@
                 <div class="flex flex-col items-start text-left">
                     <div class="flex items-center gap-4">
                         <!-- Sostituisci "logo.png" con il percorso della tua immagine -->
-                        <img src="bg/logo.jpg" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
+                        <img src="bg/logo.png" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
                         
                     </div>
                     <p class="mt-6 md:mt-4 text-base md:text-m text-[#f7f2e7]/80 max-w-sm">

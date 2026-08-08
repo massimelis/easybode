@@ -97,9 +97,19 @@
             .site-nav { padding: 0 2rem; }
         }
        
-        .site-nav-logo { display: none; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-        @media (min-width: 640px) {
-            .site-nav-logo { display: flex; }
+        .site-nav-logo { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+        /* Mobile: hamburger a sinistra (ordine naturale del flex), logo
+           centrato in modo assoluto rispetto a .site-nav (che è già
+           position:fixed, quindi è il containing block). */
+        @media (max-width: 639px) {
+            .site-nav-logo {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 1;
+                pointer-events: auto;
+            }
         }
 
         .site-nav-links {
@@ -112,8 +122,14 @@
             letter-spacing: 0.03em;
         }
         @media (min-width: 640px) {
-            .site-nav-links { display: flex; }
-        }
+    .site-nav-links {
+        display: flex;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
 
         .nav-link {
             color: #292524;
@@ -126,7 +142,7 @@
         }
         .dark .nav-link { color: #eef1f8; }
         .nav-link:hover { opacity: 1; }
-        .nav-link.active { opacity: 1; color: #292524; font-size: 1.2rem; font-weight: 700;}
+        .nav-link.active { opacity: 1; color: #292524; font-size: 1.2rem; font-weight: 700; padding-left: 10px;}
         .dark .nav-link.active { color: #eef1f8; }
 
         /* Hamburger: visibile solo sotto i 640px */
@@ -148,10 +164,11 @@
             .site-nav-hamburger { display: none; }
         }
 
-        /* ── Mobile drawer: entra da sinistra, in cascata logo → link ──── */
+        /* ── Mobile menu: dropdown centrato, in cascata sotto la navbar
+           (stile GeoGebra) — niente più drawer laterale a tutta altezza. ── */
         .mobile-menu-backdrop {
             position: fixed; inset: 0; z-index: 150;
-            background: rgba(20, 16, 12, 0.55);
+            background: transparent;
             opacity: 0; pointer-events: none;
             transition: opacity 0.25s ease;
         }
@@ -159,33 +176,44 @@
         .mobile-menu-backdrop.open { opacity: 1; pointer-events: auto; }
 
         .mobile-menu-drawer {
-            position: fixed; top: 0; left: 0; bottom: 0;
+            position: fixed;
+            top: calc(var(--nav-h) + 0.75rem);
+            left: 50%;
             z-index: 200;
-            width: min(78vw, 300px);
-            background: rgba(250, 246, 239, 0.72);
+            width: min(90vw, 320px);
+            max-height: 50vh;
+            background: rgba(250, 246, 239, 0.92);
             backdrop-filter: blur(14px) saturate(160%);
             -webkit-backdrop-filter: blur(14px) saturate(160%);
-            border-right: 1px solid rgba(138, 82, 46, 0.16);
-            box-shadow: 12px 0 30px -10px rgba(0,0,0,0.25);
-            transform: translateX(-100%);
-            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid rgba(138, 82, 46, 0.16);
+            box-shadow: 0 20px 45px -12px rgba(0,0,0,0.3);
+            border-radius: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translate(-50%, -8px) scale(0.97);
+            transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s;
             display: flex;
             flex-direction: column;
-            border-top-right-radius: 50px;
+            overflow: hidden;
         }
         .dark .mobile-menu-drawer {
-            background: rgba(18, 23, 42, 0.68);
-            border-right-color: rgba(247, 242, 231, 0.12);
+            background: rgba(18, 23, 42, 0.92);
+            border-color: rgba(247, 242, 231, 0.12);
         }
-      
-        .mobile-menu-drawer.open { transform: translateX(0); }
-.mobile-menu-logo { height: 2.5rem; }
+
+        .mobile-menu-drawer.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translate(-50%, 0) scale(1);
+        }
+
         .mobile-menu-drawer-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 1.1rem 1.25rem;
-            border-bottom: 1px solid #e8ddc9;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding: 0.6rem 0.6rem 0;
+            flex-shrink: 0;
         }
-        .dark .mobile-menu-drawer-header { border-bottom-color: #2f3a56; }
         .mobile-menu-close {
             color: #8a8377; background: transparent; border: none; cursor: pointer;
             padding: 0.35rem; border-radius: 9999px; transition: background-color 0.15s ease;
@@ -193,14 +221,22 @@
         .mobile-menu-close:hover { background-color: rgba(120,113,108,0.12); }
         .dark .mobile-menu-close { color: #7c87a3; }
 
+        /* Link centrati sia orizzontalmente che verticalmente all'interno
+           dell'area disponibile (max 50vh); scroll interno se necessario. */
         .mobile-menu-links {
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
-            padding: 1.5rem 0.75rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem 1.75rem;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            text-align: center;
         }
         .mobile-menu-link {
-            padding: 0.9rem 0.75rem;
+            padding: 0.9rem 1.25rem;
             border-radius: 0.75rem;
             font-weight: 700;
             font-size: 1.2rem;
@@ -208,8 +244,46 @@
             letter-spacing: 0.03em;
             color: #292524;
             text-decoration: none;
+            text-align: center;
+            width: 100%;
             transition: background-color 0.15s ease, color 0.15s ease;
         }
+
+
+
+.mobile-menu-link {
+    position: relative; /* necessario per posizionare lo pseudo-elemento */
+}
+
+.mobile-menu-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;              /* <-- qui regoli la larghezza della linea */
+    height: 1px;
+    background: rgba(138, 82, 46, 0.15);
+}
+
+
+
+/* Rimuove la linea dall'ultima voce */
+.mobile-menu-link:last-child::after {
+    display: none;
+}
+
+.dark .mobile-menu-link {
+    border-bottom-color: rgba(247, 242, 231, 0.12);
+    
+}
+
+/* Rimuove la linea dall'ultima voce, per non avere un doppio bordo
+   con il padding finale del menu */
+.mobile-menu-link:last-child {
+    border-bottom: none;
+}
+
         .dark .mobile-menu-link { color: #eef1f8; }
         .mobile-menu-link:hover { background-color: rgba(138, 82, 46, 0.08); }
         .mobile-menu-link.active { color: #8a522e; background-color: rgba(138, 82, 46, 0.1); }
