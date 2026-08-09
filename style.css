@@ -617,11 +617,20 @@
         .hero-overlay .history-chip { color: #56514a; }
         .dark .hero-overlay .history-chip { color: #cfd6e8; }
 
-        .site-footer img{
-            height: 80px;
-            width: 80px;
-            border-radius: 100%;
-        }
+.footer-logo-crop {
+    height: 72px;
+    width: 160px;       /* larghezza del riquadro visibile, regola tu */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+#footer-logo {
+    height: 130%;       /* ingrandisce oltre il contenitore: aumenta % per "mangiare" più spazio vuoto */
+    width: auto;
+    object-fit: cover;
+    transform: translate(-15%, 5%);  /* sposta l'immagine per centrare la parte utile: regola i valori */
+}
 
         /* ── Esempi Suggeriti: modale a tutto schermo (sostituisce il dropdown) ── */
 .examples-modal-backdrop {
@@ -725,4 +734,6 @@
     background: rgba(79, 142, 247, 0.15);
     color: #4f8ef7;
 }
+
+
 

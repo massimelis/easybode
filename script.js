@@ -80,6 +80,7 @@
     {
         it: {
             title: 'Benvenuto in <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'Il modo più semplice e veloce per studiare online la stabilità e la risposta dei sistemi di controllo.',
             placeholder: 'Scrivi la tua funzione di trasferimento...',
             calcBtn: 'CALCOLA', unitHz: 'Unità: Hz', unitRad: 'Unità: rad/s',
             pdfBtn: 'Scarica PDF', previewLabel: 'Anteprima G(s):',
@@ -114,6 +115,7 @@
         },
         en: {
             title: 'Welcome to <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'The easiest and fastest way to study the stability and response of control systems online.',
             placeholder: 'Type your transfer function...',
             calcBtn: 'CALCULATE', unitHz: 'Unit: Hz', unitRad: 'Unit: rad/s',
             pdfBtn: 'Download PDF', previewLabel: 'Preview G(s):',
@@ -148,6 +150,7 @@
         },
         fr: {
             title: 'Bienvenue sur <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'Le moyen le plus simple et le plus rapide d\'étudier en ligne la stabilité et la réponse des systèmes de contrôle.',
             placeholder: 'Écrivez votre fonction de transfert...',
             calcBtn: 'CALCULER', unitHz: 'Unité: Hz', unitRad: 'Unité: rad/s',
             pdfBtn: 'Télécharger PDF', previewLabel: 'Aperçu G(s):',
@@ -182,6 +185,7 @@
         },
         de: {
             title: 'Willkommen bei <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'Der einfachste und schnellste Weg, um online die Stabilität und Antwort von Regelungssystemen zu studieren.',
             placeholder: 'Geben Sie Ihre Übertragungsfunktion ein...',
             calcBtn: 'BERECHNEN', unitHz: 'Einheit: Hz', unitRad: 'Einheit: rad/s',
             pdfBtn: 'PDF Herunterladen', previewLabel: 'Vorschau G(s):',
@@ -216,6 +220,7 @@
         },
         es: {
             title: 'Bienvenido a <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'La forma más simple y rápida de estudiar en línea la estabilidad y la respuesta de los sistemas de control.',
             placeholder: 'Escribe tu función de transferencia...',
             calcBtn: 'CALCULAR', unitHz: 'Unidad: Hz', unitRad: 'Unidad: rad/s',
             pdfBtn: 'Descargar PDF', previewLabel: 'Vista previa G(s):',
@@ -250,6 +255,7 @@
         },
         zh: {
             title: '欢迎来到 <span class="font-bold"> Easy Bode </span>',
+            subtitle: '在线学习控制系统稳定性与响应的最简单、最快捷的方式。',
             placeholder: '输入你的传递函数...',
             calcBtn: '计算', unitHz: '单位: Hz', unitRad: '单位: rad/s',
             pdfBtn: '下载 PDF', previewLabel: '预览 G(s):',
@@ -284,6 +290,7 @@
         },
         pt: {
             title: 'Bem-vindo ao <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'A forma mais simples e rápida de estudar online a estabilidade e a resposta dos sistemas de controlo.',
             placeholder: 'Escreva sua função de transferência...',
             calcBtn: 'CALCULAR', unitHz: 'Unidade: Hz', unitRad: 'Unidade: rad/s',
             pdfBtn: 'Baixar PDF', previewLabel: 'Pré-visualização G(s):',
@@ -318,6 +325,7 @@
         },
         ja: {
             title: '<span class="font-bold"> Easy Bode </span> へようこそ',
+            subtitle: '制御システムの安定性と応答をオンラインで学ぶ、もっとも簡単で速い方法。',
             placeholder: '伝達関数を入力してください...',
             calcBtn: '計算', unitHz: '単位: Hz', unitRad: '単位: rad/s',
             pdfBtn: 'PDF ダウンロード', previewLabel: 'プレビュー G(s):',
@@ -352,6 +360,7 @@
         },
         ar: {
             title: 'مرحبًا بك في <span class="font-bold"> Easy Bode </span>',
+            subtitle: 'الطريقة الأسهل والأسرع لدراسة استقرار واستجابة أنظمة التحكم عبر الإنترنت.',
             placeholder: 'اكتب دالة النقل الخاصة بك...',
             calcBtn: 'احسب', unitHz: 'وحدة: Hz', unitRad: 'وحدة: rad/s',
             pdfBtn: 'تحميل PDF', previewLabel: 'معاينة G(s):',
@@ -386,6 +395,7 @@
         },
         hi: {
             title: '<span class="font-bold"> Easy Bode </span> में आपका स्वागत है',
+            subtitle: 'नियंत्रण प्रणालियों की स्थिरता और प्रतिक्रिया को ऑनलाइन अध्ययन करने का सबसे आसान और तेज़ तरीका।',
             placeholder: 'अपना ट्रांसफर फंक्शन लिखें...',
             calcBtn: 'गणना करें', unitHz: 'इकाई: Hz', unitRad: 'इकाई: rad/s',
             pdfBtn: 'PDF डाउनलोड', previewLabel: 'पूर्वावलोकन G(s):',
@@ -466,6 +476,7 @@
 
             const L = LANG[currentLang] || LANG['it'];
             document.getElementById('ui-title').innerHTML = L.title;
+            document.getElementById('ui-subtitle').textContent = L.subtitle;
             document.getElementById('ui-calc-btn').textContent = L.calcBtn;
 
             startPlaceholderAnimation();
@@ -580,6 +591,7 @@
             }
         } catch(e) {}
         lucide.createIcons();
+        updateLogos();
 
         // Translates the shared top navbar (page links). Safe to call on
         // every page — Home, Tour, Docs — since it only touches nav
@@ -593,6 +605,13 @@
                 if (el) el.textContent = map[id];
             });
         }
+
+        function updateLogos() {
+    document.querySelectorAll('#nav-logo, #footer-logo').forEach(img => {
+        const src = isDarkMode ? img.dataset.dark : img.dataset.light;
+        if (src && img.getAttribute('src') !== src) img.setAttribute('src', src);
+    });
+}
 
         window.addEventListener('DOMContentLoaded', () => { applyNavTranslations(); updateLatexPreview(); applyTranslations(); restoreCurrentStudy(); });
 
@@ -669,14 +688,15 @@
 
 
         // Switches between light and dark theme and swaps the moon/sun icon.
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            try { localStorage.setItem(DARK_MODE_KEY, isDarkMode ? '1' : '0'); } catch(e) {}
-            document.documentElement.classList.toggle('dark');
-            document.getElementById('theme-icon').setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
-            lucide.createIcons();
-            if (isInterfaceExpanded) generateBode();
-        }
+       function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    try { localStorage.setItem(DARK_MODE_KEY, isDarkMode ? '1' : '0'); } catch(e) {}
+    document.documentElement.classList.toggle('dark');
+    document.getElementById('theme-icon').setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
+    lucide.createIcons();
+    updateLogos();
+    if (isInterfaceExpanded) generateBode();
+}
 function toggleMobileMenu() {
             const backdrop = document.getElementById('mobile-menu-backdrop');
             const drawer = document.getElementById('mobile-menu-drawer');

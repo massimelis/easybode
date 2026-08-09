@@ -67,7 +67,8 @@
 <!-- ═══════════════ Shared top navbar — fixed, glass, identical on every page ═══════════════ -->
     <nav class="site-nav">
         <a href="index.html" class="site-nav-logo" aria-label="Easy Bode — Home">
-            <img src="bg/logo.png" alt="Easy Bode" class="h-12 sm:h-18 w-auto object-contain rounded-lg">
+                  <img id="nav-logo" src="bg/logo.png" data-light="bg/logo.png" data-dark="bg/logod.png"
+     alt="Easy Bode" class="h-24 sm:h-24 mt-2 w-auto object-contain rounded-lg">
         </a>
 
         <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="site-nav-hamburger" aria-label="Apri menu">
@@ -134,7 +135,7 @@
         <div class="card border rounded-3xl sm:rounded-3xl p-6 sm:p-7 shadow-sm">
             <div class="flex items-center gap-3 mb-4">
                 <span class="docs-chapter-icon"><i data-lucide="compass" class="w-5 h-5"></i></span>
-                <h2 class="text-lg font-semibold">Welcome to the Tour</h2>
+                <h2 class="text-lg font-semibold">Benvenuto nel Tour</h2>
             </div>
             <div class="space-y-4 text-sm text-stone-600 dark:text-gray-300 leading-relaxed">
                 <p><strong>Easy Bode</strong> is an independent project created as an accessible, intermediate-level tool designed for students and teachers in engineering, electronics, and automation courses at both the high school and university levels.
@@ -194,8 +195,10 @@ Easy Bode enables the study, understanding, analysis, and PDF printing of linear
                      Buy me a coffee stacked). -->
                 <div class="flex flex-col items-start text-left">
                     <div class="flex items-center gap-4">
+                             <div class="footer-logo-crop">
                         <!-- Sostituisci "logo.png" con il percorso della tua immagine -->
-                        <img src="bg/logo.png" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
+                        <img id="footer-logo" src="bg/logo.png" data-light="bg/logo.png" data-dark="bg/logod.png"
+     alt="Easy Bode" class="h-24 md:h-24 w-auto object-contain"></div>
 
                     </div>
                     <p class="mt-6 md:mt-4 text-base md:text-m text-[#f7f2e7]/80 max-w-sm">
@@ -221,7 +224,7 @@ Easy Bode enables the study, understanding, analysis, and PDF printing of linear
                         <a href="https://www.paypal.com/donate" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center gap-2 w-fit px-6 py-3.5 rounded-2xl bg-[#ffc439] hover:bg-[#ffb703] text-[#1c1917] font-semibold text-base shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all">
                             <i data-lucide="coffee" class="w-5 h-5"></i>
-                            Buy me a coffee on PayPal
+                            Buy me a coffee (not yet!)
                         </a>
                     </div>
                 </div>

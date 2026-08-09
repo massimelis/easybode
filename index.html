@@ -77,7 +77,8 @@
 <!-- ═══════════════ Shared top navbar — fixed, glass, identical on every page ═══════════════ -->
     <nav class="site-nav">
         <a href="index.html" class="site-nav-logo" aria-label="Easy Bode — Home">
-            <img src="bg/logo.png" alt="Easy Bode" class="h-12 sm:h-18 w-auto object-contain rounded-lg">
+            <img id="nav-logo" src="bg/logo.png" data-light="bg/logo.png" data-dark="bg/logod.png"
+     alt="Easy Bode" class="h-24 sm:h-24 mt-2 w-auto object-contain rounded-lg">
         </a>
 
         <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="site-nav-hamburger" aria-label="Apri menu">
@@ -132,6 +133,9 @@
     <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-10 mt-16 sm:mt-24 text-center" id="ui-title">
         Welcome to <span class="font-bold">Easy Bode</span>
     </h1>
+    <h2 class="text-center text-base md:text-lg max-w-2xl mx-auto opacity-80 font-normal mb-10 -mt-6" id="ui-subtitle">
+    Il modo piu semplice e veloce per studiare online la stabilità e la risposta dei sistemi di controllo.
+</h2>
     
     <div class="max-w-3xl mx-auto w-full">
         
@@ -554,8 +558,10 @@
                      Buy me a coffee stacked). -->
                 <div class="flex flex-col items-start text-left">
                     <div class="flex items-center gap-4">
+                        <div class="footer-logo-crop">
                         <!-- Sostituisci "logo.png" con il percorso della tua immagine -->
-                        <img src="bg/logo.png" alt="Easy Bode" class="h-14 md:h-16 w-auto object-contain">
+                        <img id="footer-logo" src="bg/logo.png" data-light="bg/logo.png" data-dark="bg/logod.png"
+     alt="Easy Bode" class="h-24 md:h-24 w-auto object-contain"></div>
                         
                     </div>
                     <p class="mt-6 md:mt-4 text-base md:text-m text-[#f7f2e7]/80 max-w-sm">
@@ -581,7 +587,7 @@
                         <a href="https://www.paypal.com/donate" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center gap-2 w-fit px-6 py-3.5 rounded-2xl bg-[#ffc439] hover:bg-[#ffb703] text-[#1c1917] font-semibold text-base shadow-md cursor-pointer hover:scale-105 active:scale-95 transition-all">
                             <i data-lucide="coffee" class="w-5 h-5"></i>
-                            Buy me a coffee on PayPal
+                            Buy me a coffee (not yet!)
                         </a>
                     </div>
                 </div>
