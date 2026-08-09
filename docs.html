@@ -78,33 +78,32 @@
             <a href="tour.html" id="nav-link-tour" class="nav-link">Tour</a>
         </div>
 
-        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-            <div class="relative inline-block text-left" id="langDropdownContainer">
-                <button onclick="toggleLangMenu()" id="lang-btn" class="flex items-center gap-2 p-2 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext text-sm font-medium">
-                    <span id="currentLangFlag" class="flex items-center"></span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 opacity-70"></i>
-                </button>
-                <div id="langMenu" class="hidden action-menu simple-menu-scroll absolute right-0 mt-2 w-44 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder shadow-xl z-50 py-1 max-h-64 overflow-y-auto"></div>
-            </div>
+      <div class="flex items-center gap-1 sm:gap-3 shrink-0">
+    <div class="relative inline-block text-left" id="langDropdownContainer">
+        <button onclick="toggleLangMenu()" id="lang-btn" class="flex items-center gap-2 p-1.5 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-900 dark:text-darktext text-sm font-medium">
+            <span id="currentLangFlag" class="flex items-center"></span>
+            <i data-lucide="chevron-down" class="w-5 h-5 opacity-70"></i>
+        </button>
+        <div id="langMenu" class="hidden action-menu simple-menu-scroll absolute right-0 mt-2 w-44 bg-white dark:bg-darkcard border border-stone-200 dark:border-darkborder shadow-xl z-50 py-1 max-h-64 overflow-y-auto"></div>
+    </div>
 
-            <button onclick="toggleDarkMode()" id="theme-btn" class="p-2 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext">
-                <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
-            </button>
-        </div>
+    <button onclick="toggleDarkMode()" id="theme-btn" class="p-1.5 sm:p-2.5 rounded-xl cursor-pointer hover:scale-105 active:scale-95 transition-all text-stone-800 dark:text-darktext">
+        <i data-lucide="moon" id="theme-icon" class="w-6 h-6"></i>
+    </button>
+</div>
     </nav>
 
     <!-- Mobile drawer: si apre da sinistra, in cascata logo → Home → Docs → Tour -->
-    <div id="mobile-menu-backdrop" class="mobile-menu-backdrop hidden" onclick="closeMobileMenu()"></div>
+     <div id="mobile-menu-backdrop" class="mobile-menu-backdrop hidden" onclick="closeMobileMenu()"></div>
     <aside id="mobile-menu-drawer" class="mobile-menu-drawer">
         <div class="mobile-menu-drawer-header">
-            <img src="bg/logo.png" alt="Easy Bode" class="h-14 w-auto object-contain rounded-lg">
             <button onclick="closeMobileMenu()" class="mobile-menu-close" aria-label="Chiudi menu">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <nav class="mobile-menu-links">
-            <a href="index.html" id="nav-link-home" class="nav-link active" id="mobile-nav-link-home" class="mobile-menu-link">Home</a>
-            <a href="docs.html" id="nav-link-docs" class="nav-link active" id="mobile-nav-link-docs" class="mobile-menu-link">Docs</a>
+            <a href="index.html" id="mobile-nav-link-home" class="mobile-menu-link">Home</a>
+            <a href="docs.html" id="mobile-nav-link-docs" class="mobile-menu-link">Docs</a>
             <a href="tour.html" id="mobile-nav-link-tour" class="mobile-menu-link">Tour</a>
         </nav>
     </aside>
